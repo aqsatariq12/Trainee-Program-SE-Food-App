@@ -3,8 +3,10 @@ import placeOrder from "../../assets/images/placeOrder.png";
 import trackOrder from "../../assets/images/trackOrder.png";
 import getOrder from "../../assets/images/getOrder.png";
 import { useState } from "react";
-
+import { useTheme } from "../../context/ThemeContext";
 export default function AboutUs() {
+  const { theme } = useTheme();
+
   const cards = [
     {
       title: "Place an Order!",
@@ -50,7 +52,7 @@ export default function AboutUs() {
             Know more about us!
           </h2>
 
-          <div className="flex flex-wrap justify-center lg:justify-start gap-3 lg:gap-1 xl:gap-3 md:text-base md:mt-4"> 
+          <div className="flex flex-wrap justify-center lg:justify-start gap-3 lg:gap-1 xl:gap-3 md:text-base md:mt-4">
             {tabs.map((tab, index) => (
               <button
                 key={index}
@@ -69,7 +71,9 @@ export default function AboutUs() {
         </div>
 
         {/* White Container */}
-        <div className="bg-white rounded-3xl mt-10 md:p-6 md:p-8 lg:p-10">
+        <div className={`rounded-3xl mt-10 p-10 md:p-6 md:p-8 lg:p-10 ${
+          theme === "dark" ? "bg-[#03081F]" : "bg-white"
+        }`}>
           <div className="grid lg:grid-cols-12 gap-4">
             {/* Left Side */}
             <div className="lg:col-span-4 flex flex-col items-center gap-4 lg:gap-0 xl:gap-4">
@@ -82,6 +86,9 @@ export default function AboutUs() {
           activeQuestion === index
             ? "bg-[#FC8A06] text-white"
             : "bg-transparent text-black hover:bg-orange-100"
+        }
+        ${
+          theme === "dark" ? "text-white hover:text-black" : "text-base"
         }`}
                 >
                   {question}
@@ -98,7 +105,9 @@ export default function AboutUs() {
                     key={index}
                     className="bg-gray-200 rounded-2xl p-5 lg:p-2 xl:p-5 text-center flex flex-col items-center"
                   >
-                    <h3 className="font-bold text-lg lg:text-sm xl:text-lg mb-5">{card.title}</h3>
+                    <h3 className="font-bold text-lg lg:text-sm xl:text-lg mb-5">
+                      {card.title}
+                    </h3>
 
                     <img
                       src={card.image}
@@ -106,13 +115,17 @@ export default function AboutUs() {
                       className="h-20 lg:h-15 xl:h-20 object-contain mb-5"
                     />
 
-                    <p className="text-gray-700 leading-6 lg:text-[15px] xl:text-[20px]">{card.desc}</p>
+                    <p className="text-gray-700 leading-6 lg:text-[15px] xl:text-[20px]">
+                      {card.desc}
+                    </p>
                   </div>
                 ))}
               </div>
 
               {/* Bottom Text */}
-              <p className="text-center text-gray-700 mt-8 max-w-3xl mx-auto leading-7">
+              <p className={`text-center mt-8 text-gray-500 max-w-3xl mx-auto leading-6 text-sm md:text-base ${
+                theme === "dark" ? "text-white" :"text-base"
+              }`}>
                 Order.UK simplifies the food ordering process. Browse through
                 our diverse menu, select your favorite dishes, and proceed to
                 checkout. Your delicious meal will be on its way to your

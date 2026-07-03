@@ -5,9 +5,11 @@ import { HiMenu, HiX } from "react-icons/hi";
 import logo1 from "../../assets/logos/LOGO 1.png";
 import maleuser from "../../assets/icons/Male User.png";
 import TopBar from "./TopBar";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -24,23 +26,26 @@ export default function Navbar() {
       {/* Mobile: Navbar upar, TopBar neeche (flex-col-reverse)
           Desktop: TopBar upar, Navbar neeche (md:flex-col) */}
       <div className="flex flex-col-reverse md:flex-col">
-
         <TopBar />
 
         <nav className="bg-white">
           <div className="max-w-7xl mx-auto px-5 lg:px-8">
             <div className="flex justify-between items-center h-20">
               {/* Logo */}
-              <img src={logo1} alt="Logo" className="w-24 md:w-28 lg:w-36 md:mr-2" />
+              <img
+                src={logo1}
+                alt="Logo"
+                className="w-24 md:w-28 lg:w-28 md:mr-2"
+              />
 
               {/* Desktop Navigation */}
-              <div className="hidden md:flex items-center gap-2">
+              <div className="hidden lg:flex items-center lg:gap-1 xl:gap-3">
                 {navLinks.map((link) => (
                   <NavLink
                     key={link.path}
                     to={link.path}
                     className={({ isActive }) =>
-                      `px-2 md:px-3 lg:px-5 py-2 text-[13px] lg:text-base rounded-full font-medium whitespace-nowrap transition-all duration-200 ${
+                      `px-2 lg:px-2 xl:px-5 py-2 text-[12px] lg:text-[13px] xl:text-base rounded-full font-medium whitespace-nowrap transition-all duration-200 ${
                         isActive
                           ? "bg-[#FC8A06] text-white"
                           : "text-black hover:text-[#FC8A06]"
@@ -50,20 +55,34 @@ export default function Navbar() {
                     {link.name}
                   </NavLink>
                 ))}
+                <button
+                  onClick={toggleTheme}
+                  className={`lg:px-2 xl:px-4
+            lg:py-2
+            lg:text-xs xl:text-sm
+            rounded-lg font-medium transition-all duration-300 border
+            ${
+              theme === "dark"
+                ? "bg-[#0F172A] border-gray-600 text-white hover:bg-[#1E293B]"
+                : "bg-gray-100 border-gray-300 text-[#03081F] hover:bg-gray-200"
+            }`}
+                >
+                  {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
+                </button>
               </div>
 
               {/* Desktop Login Button */}
               <button
                 onClick={() => navigate("/login")}
-                className="hidden md:flex items-center gap-2 md:gap-0 bg-black text-white lg:px-3 py-2 lg:py-3 md:pl-1 md:pr-2 md:py-1 rounded-full text-xs md:text-xs lg:text-base hover:bg-gray-800 transition cursor-pointer"
+                className="hidden lg:flex items-center lg:gap-1 xl:gap-2 bg-[#03081F] text-white lg:px-2 xl:px-4 lg:py-2 xl:py-3 rounded-full lg:text-xs xl:text-base hover:bg-gray-800 transition cursor-pointer"
               >
-                <img src={maleuser} alt="User" className="w-8 h-auto" />
+                <img src={maleuser} alt="User" className="lg:w-6 xl:w-8 h-auto" />
                 <span>Login / Signup</span>
               </button>
 
               {/* Mobile Toggle */}
               <button
-                className="md:hidden text-3xl"
+                className="lg:hidden text-3xl"
                 onClick={() => setMenuOpen(!menuOpen)}
               >
                 {menuOpen ? <HiX /> : <HiMenu />}
@@ -93,6 +112,18 @@ export default function Navbar() {
                 ))}
 
                 <button
+                  onClick={toggleTheme}
+                  className={`flex items-center justify-center gap-2 py-3 rounded-lg border transition
+  ${
+    theme === "dark"
+      ? "bg-[#0F172A] text-white border-gray-600"
+      : "bg-gray-100 text-[#03081F] border-gray-300"
+  }`}
+                >
+                  {theme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode"}
+                </button>
+
+                <button
                   onClick={() => {
                     navigate("/login");
                     setMenuOpen(false);
@@ -106,7 +137,6 @@ export default function Navbar() {
             </div>
           )}
         </nav>
-
       </div>
 
       <Outlet />

@@ -1,34 +1,57 @@
 import React from "react";
 import hero from "../../assets/images/hero.png";
+import heroDark from "../../assets/images/heroDarkTheme.png";
 import heroRight from "../../assets/images/heroRight.png";
 import heroRightBg from "../../assets/images/heroRightBg.png";
 import logo1 from "../../assets/logos/LOGO 1.png";
 import notification1 from "../../assets/images/notification1.png";
 import notification2 from "../../assets/images/notification2.png";
 import arrow from "../../assets/icons/arrow.png";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function Hero() {
+  const { theme } = useTheme();
   return (
     <section className="max-w-7xl mx-auto mt-8 px-4">
-      <div className="relative overflow-hidden rounded-3xl border border-gray-400 bg-white h-[320px] md:h-[380px] lg:h-[400px] xl:h-[450px]">
+      <div
+        className={`relative overflow-hidden rounded-3xl border border-gray-400 h-[320px] md:h-[380px] lg:h-[400px] xl:h-[450px] ${
+          theme === "dark"
+            ? "bg-[#03081F] border-gray-700"
+            : "bg-white border-gray-400"
+        }`}
+      >
         {/* LEFT CONTENT */}
         <div className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[420px] text-center lg:left-12 lg:-translate-x-0 lg:text-left z-20 md:left-65">
-          <p className="text-gray-600 mb-3">
+          <p
+            className={`mb-3 ${theme === "dark" ? "text-white" : "text-gray-600"}`}
+          >
             Order Restaurant food, takeaway and groceries.
           </p>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+          <h1
+            className={`text-3xl md:text-4xl lg:text-5xl font-bold leading-tight ${theme === "dark" ? "text-white" : "text-[#03081F]"}`}
+          >
             Feast Your Senses,
             <br />
             <span className="text-orange-500">Fast and Fresh</span>
           </h1>
-          <p className="text-gray-500 mt-2 mb-3">
+          <p
+            className={` mt-2 mb-3 ${
+              theme === "dark" ? "text-white" : "text-gray-500"
+            }`}
+          >
             Enter a postcode to see what we deliver
           </p>
-          <div className="flex w-full border border-gray-400 rounded-full overflow-hidden h-11 md:h-12 md:w-90 xl:h-14 xl:w-full lg:h-10 lg:w-80">
+          <div
+            className={`flex w-full rounded-full overflow-hidden h-11 md:h-12 md:w-90 xl:h-14 xl:w-99 lg:h-10 lg:w-80 border ${
+              theme === "dark"
+                ? "bg-white border-gray-600"
+                : "bg-white border-gray-400"
+            }`}
+          >
             <input
               type="text"
               placeholder="e.g. EC4R 3TE"
-              className="flex-1 px-3 md:px-4 lg:px-5 text-sm lg:text-base outline-none"
+              className={`flex-1 px-3 md:px-4 lg:px-5 text-sm lg:text-base outline-none  ${theme === "dark" ? "bg-white" : "bg-white"}`}
             />
 
             <button className="bg-orange-500 rounded-full flex items-center justify-center w-12 md:w-14 lg:w-0 lg:px-10 xl:w-auto xl:px-10">
@@ -36,7 +59,9 @@ export default function Hero() {
               <img src={arrow} alt="Search" className="w-8 h-8 lg:hidden" />
 
               {/* Desktop */}
-              <span className="hidden lg:block font-semibold text-white">Search</span>
+              <span className="hidden lg:block font-semibold text-white">
+                Search
+              </span>
             </button>
           </div>
         </div>
@@ -51,19 +76,34 @@ export default function Hero() {
         </div>
 
         {/* FOOD IMAGE */}
-        <img
-          src={heroRight}
-          alt=""
-          className="hidden lg:block absolute xl:right-[250px] xl:bottom-0 xl:w-[250px] lg:right-[160px] lg:bottom-0 lg:w-[255px] z-20"
-        />
+        {theme === "light" && (
+          <img
+            src={heroRight}
+            alt=""
+            className="hidden lg:block absolute xl:right-[250px] xl:bottom-0 xl:w-[250px] lg:right-[160px] lg:bottom-0 lg:w-[255px] z-20"
+          />
+        )}
 
         {/* GIRL IMAGE */}
-        <img
-          src={hero}
-          alt=""
-          className="hidden md:block absolute bottom-0 md:-right-25 md:left-auto md:translate-x-0 md:h-[350px] lg:left-130 lg:right-auto lg:-translate-x-1/2 lg:h-[380px] lg:bottom-0 xl:left-1/2 xl:right-auto xl:-translate-x-1/2 xl:h-[400px] xl:bottom-0 z-30
-  "
-        />
+        <div className="hidden md:block absolute bottom-0 lg:left-130 xl:left-1/2 lg:-translate-x-1/2 xl:-translate-x-1/2 z-30">
+          <img
+            src={hero}
+            alt=""
+            className={`md:h-[350px] lg:h-[370px] xl:h-[400px] lg:scale-x-120 xl:lg:scale-x-110 transition-all duration-500 ${
+              theme === "dark"
+                ? "md:ml-80 lg:-ml-10 lg:opacity-30"
+                : "md:ml-80 lg:ml-0 lg:opacity-100"
+            }`}
+          />
+
+          {theme === "dark" && (
+            <img
+              src={heroDark}
+              alt=""
+              className="hidden lg:block absolute bottom-0 md:right-1 lg:-right-1 xl:lg:-right-10 md:h-[350px] lg:h-[380px] xl:h-[400px] z-40"
+            />
+          )}
+        </div>
 
         {/* Notification 1 */}
         <div className="hidden lg:block absolute lg:top-8 lg:right-15 xl:top-12 xl:right-16 bg-white rounded-2xl shadow-lg lg:p-3 xl:p-4 lg:w-60 xl:w-72 z-40">
