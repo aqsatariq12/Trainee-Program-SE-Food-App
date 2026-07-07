@@ -8,6 +8,8 @@ import Offers from "./pages/customer/Offers";
 import RestaurantDetail from "./pages/customer/RestaurantDetail";
 import OrderTracking from "./pages/customer/OrderTracking";
 import Login from "./pages/customer/Login";
+import Cart from "./pages/customer/Cart";
+
 function App() {
   const [count, setCount] = useState(0);
 
@@ -21,6 +23,7 @@ function App() {
           <Route path="/restaurants" element={<RestaurantDetail />} />
           <Route path="/track-order" element={<OrderTracking />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/cart" element={<Cart />} />
         </Route>
       </Routes>
     </>

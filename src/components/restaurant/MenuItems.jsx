@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import searchIcon from "../../assets/icons/search.png";
+import cart from "../../assets/icons/shoppingCart.png";
 import discountPercentageBg from "../../assets/images/discountPercentageBg.png";
 import firstOrderDis from "../../assets/images/firstOrderDis.png";
 import plusBgImg from "../../assets/images/plusBgImg.png";
@@ -21,11 +22,11 @@ import menuIcon from "../../assets/icons/restaurantMenuIcon.png";
 import { HiX, HiMenu } from "react-icons/hi";
 import { IoChevronDown } from "react-icons/io5";
 import { useTheme } from "../../context/ThemeContext";
-
+import { useNavigate } from "react-router-dom";
 
 function MenuItems() {
-    const { theme } = useTheme();
-  
+  const { theme } = useTheme();
+  const navigate = useNavigate();
   const tabs = [
     "Offers",
     "Burgers",
@@ -65,24 +66,35 @@ function MenuItems() {
   return (
     <>
       <section className="max-w-7xl mx-auto px-6 py-8">
-        <div className="flex flex-col lg:flex-row justify-between gap-5 lg:items-center">
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold">
+        <div className="flex items-center justify-between gap-3">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold flex-1">
             All Offers from McDonald's East London
           </h1>
+
+          <button
+            onClick={() => navigate("/cart")}
+            className="transition-transform duration-300 hover:scale-110"
+          >
+            <img
+              src={cart}
+              alt="Cart"
+              className="w-6 sm:w-7 lg:w-8 cursor-pointer"
+            />
+          </button>
         </div>
       </section>
-      <div className={`hidden xl:block ${
-            theme === "dark" ? "bg-[#FC8A06]": "bg-gray-100"
-      }`}>
+      <div
+        className={`hidden xl:block ${
+          theme === "dark" ? "bg-[#FC8A06]" : "bg-gray-100"
+        }`}
+      >
         <div className="max-w-7xl mx-auto flex overflow-x-auto whitespace-nowrap px-4 py-3 gap-3 no-scrollbar">
           {tabs.map((tab, index) => (
             <button
               key={index}
               onClick={() => setActiveTab(index)}
               className={`px-5 py-2 rounded-full text-sm font-semibold transition text-[#03081F]
-            ${
-              theme === "dark" ? "text-white" : ""
-            }
+            ${theme === "dark" ? "text-white" : ""}
         ${
           activeTab === index
             ? "bg-[#03081F] text-white"
@@ -100,7 +112,7 @@ function MenuItems() {
           className="w-full border border-gray-400 rounded-2xl bg-white px-5 py-0 flex justify-between items-center"
         >
           <div className="flex items-center gap-3">
-            <img src={menuIcon} alt="menuIcon" className="w-10"/>
+            <img src={menuIcon} alt="menuIcon" className="w-10" />
 
             <h2 className="text-3xl font-bold text-[#03081F]">Menu</h2>
           </div>
