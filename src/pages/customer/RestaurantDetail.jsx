@@ -1,7 +1,7 @@
-import React from 'react'
-
+import React from "react";
+import MenuItems from "../../components/restaurant/MenuItems";
 export default function RestaurantDetail() {
-  return (
-    <div>RestaurantDetail</div>
-  )
+  return <>
+  <MenuItems />
+  </>;
 }
