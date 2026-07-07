@@ -71,7 +71,7 @@ function MenuItems() {
             All Offers from McDonald's East London
           </h1>
 
-          <button
+          {/* <button
             onClick={() => navigate("/cart")}
             className="transition-transform duration-300 hover:scale-110"
           >
@@ -80,7 +80,7 @@ function MenuItems() {
               alt="Cart"
               className="w-6 sm:w-7 lg:w-8 cursor-pointer"
             />
-          </button>
+          </button> */}
         </div>
       </section>
       <div
@@ -235,6 +235,12 @@ function MenuItems() {
       {activeTab === 9 && <Sauce />}
 
       {activeTab === 10 && <Orbit />}
+      <button
+        onClick={() => navigate("/cart")}
+        className="fixed bottom-6 right-6 z-50 bg-[#FC8A06] p-4 rounded-full shadow-xl hover:scale-110 hover:bg-[#e67a00] transition-transform duration-300"
+      >
+        <img src={cart} alt="Cart" className="w-6 h-6 sm:w-7 sm:h-7" />
+      </button>
     </>
   );
 }
