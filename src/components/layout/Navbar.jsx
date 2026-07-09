@@ -6,6 +6,8 @@ import logo1 from "../../assets/logos/LOGO 1.png";
 import maleuser from "../../assets/icons/Male User.png";
 import TopBar from "./TopBar";
 import { useTheme } from "../../context/ThemeContext";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../redux/slices/authSlice";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -13,9 +15,16 @@ export default function Navbar() {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const dispatch = useDispatch();
+  const { accessToken } = useSelector((state) => state.auth);
+
+  const isLoggedIn = !!accessToken;
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
   const navLinks = [
     { name: "Home", path: "/" },
-    { name: "Browse Menu", path: "/menu" },
     { name: "Special Offers", path: "/offers" },
     { name: "Restaurants", path: "/restaurants" },
     { name: "Track Order", path: "/track-order" },
@@ -73,13 +82,16 @@ export default function Navbar() {
 
               {/* Desktop Login Button */}
               <button
-                onClick={() => navigate("/login")}
+                onClick={isLoggedIn ? handleLogout : () => navigate("/login")}
                 className="hidden lg:flex items-center lg:gap-1 xl:gap-2 bg-[#03081F] text-white lg:px-2 xl:px-4 lg:py-2 xl:py-3 rounded-full lg:text-xs xl:text-base hover:bg-gray-800 transition cursor-pointer"
               >
-                <img src={maleuser} alt="User" className="lg:w-6 xl:w-8 h-auto" />
-                <span>Login / Signup</span>
+                <img
+                  src={maleuser}
+                  alt="User"
+                  className="lg:w-6 xl:w-8 h-auto"
+                />
+                <span>{isLoggedIn ? "Logout" : "Login / Signup"}</span>
               </button>
-
               {/* Mobile Toggle */}
               <button
                 className="lg:hidden text-3xl"
@@ -125,13 +137,17 @@ export default function Navbar() {
 
                 <button
                   onClick={() => {
-                    navigate("/login");
+                    if (isLoggedIn) {
+                      handleLogout();
+                    } else {
+                      navigate("/login");
+                    }
                     setMenuOpen(false);
                   }}
                   className="flex items-center justify-center gap-2 bg-black text-white py-3 rounded-lg mt-2"
                 >
                   <img src={maleuser} alt="User" className="w-5 h-5" />
-                  Login / Signup
+                  {isLoggedIn ? "Logout" : "Login / Signup"}
                 </button>
               </div>
             </div>

@@ -16,7 +16,7 @@ import Salads from "./items/Salads";
 import Dessert from "./items/Dessert";
 import HotDrinks from "./items/HotDrinks";
 import Sauce from "./items/Sauce";
-import HappyMeal from "./items/happyMeal";
+import HappyMeal from "./items/HappyMeal";
 import Orbit from "./items/Orbit";
 import menuIcon from "../../assets/icons/restaurantMenuIcon.png";
 import { HiX, HiMenu } from "react-icons/hi";
@@ -237,7 +237,7 @@ function MenuItems() {
       {activeTab === 10 && <Orbit />}
       <button
         onClick={() => navigate("/cart")}
-        className="fixed bottom-6 right-6 z-50 bg-[#FC8A06] p-4 rounded-full shadow-xl hover:scale-110 hover:bg-[#e67a00] transition-transform duration-300"
+        className="fixed bottom-6 right-6 z-50 bg-[#FC8A06] p-4 rounded-full shadow-xl hover:scale-110 hover:bg-[#e67a00] transition-transform duration-300 cursor-pointer"
       >
         <img src={cart} alt="Cart" className="w-6 h-6 sm:w-7 sm:h-7" />
       </button>

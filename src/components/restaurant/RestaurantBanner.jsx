@@ -35,7 +35,7 @@ const RestaurantBanner = ({
         <div className="relative flex items-center justify-between lg:gap-0 xl:gap-0 px-5 lg:py-5 xl:py-5 ">
 
           {/* Left Section */}
-          <div className="max-w-[50%] text-left  ">
+          <div className="max-w-[50%] text-left ">
             <p className={`text-sm mb-1 ${isDark ? "text-white" : "text-gray-600"}`}>
               {tagline}
             </p>

@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
-
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../../redux/slices/authSlice";
+import { useNavigate } from "react-router-dom";
 const Signup = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
@@ -16,8 +18,27 @@ const Signup = () => {
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [signupError, setSignupError] = useState("");
 
+  const { loading, error } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (error) {
+      const message =
+        typeof error === "string"
+          ? error
+          : error.error || "Registration Failed";
+
+      setSignupError(message);
+
+      const timer = setTimeout(() => {
+        setSignupError("");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -69,8 +90,6 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-
-    setIsSubmitting(true);
     try {
       const payload = {
         email: formData.email,
@@ -84,9 +103,15 @@ const Signup = () => {
       // TODO (backend integration):
       // dispatch(registerUser(payload)) -> authSlice async thunk
       // on success -> auto-login or redirect to /login
-      console.log("Signup payload:", payload);
-    } finally {
-      setIsSubmitting(false);
+     const result = await dispatch(registerUser(payload)).unwrap();
+      if(result.data.is_admin){
+        navigate("/admin");
+      }
+      else{
+        navigate("/");
+      }
+    } catch (error) {
+      console.log("Error:", error);
     }
   };
 
@@ -103,10 +128,14 @@ const Signup = () => {
       >
         {/* Header */}
         <div className="text-center mb-8">
-          <p className={`text-sm mb-1 ${isDark ? "text-orange-400" : "text-orange-500"}`}>
+          <p
+            className={`text-sm mb-1 ${isDark ? "text-orange-400" : "text-orange-500"}`}
+          >
             I'm lovin' it!
           </p>
-          <h1 className={`text-2xl sm:text-3xl font-extrabold ${isDark ? "text-white" : "text-gray-900"}`}>
+          <h1
+            className={`text-2xl sm:text-3xl font-extrabold ${isDark ? "text-white" : "text-gray-900"}`}
+          >
             Create your account
           </h1>
         </div>
@@ -162,7 +191,9 @@ const Signup = () => {
               } ${errors.username ? "border-red-500" : ""}`}
             />
             {errors.username && (
-              <p className="text-red-500 text-xs mt-1 ml-2">{errors.username}</p>
+              <p className="text-red-500 text-xs mt-1 ml-2">
+                {errors.username}
+              </p>
             )}
           </div>
 
@@ -190,7 +221,9 @@ const Signup = () => {
                 } ${errors.country ? "border-red-500" : ""}`}
               />
               {errors.country && (
-                <p className="text-red-500 text-xs mt-1 ml-2">{errors.country}</p>
+                <p className="text-red-500 text-xs mt-1 ml-2">
+                  {errors.country}
+                </p>
               )}
             </div>
 
@@ -255,7 +288,9 @@ const Signup = () => {
               </button>
             </div>
             {errors.password && (
-              <p className="text-red-500 text-xs mt-1 ml-2">{errors.password}</p>
+              <p className="text-red-500 text-xs mt-1 ml-2">
+                {errors.password}
+              </p>
             )}
           </div>
 
@@ -282,24 +317,36 @@ const Signup = () => {
               } ${errors.confirmPassword ? "border-red-500" : ""}`}
             />
             {errors.confirmPassword && (
-              <p className="text-red-500 text-xs mt-1 ml-2">{errors.confirmPassword}</p>
+              <p className="text-red-500 text-xs mt-1 ml-2">
+                {errors.confirmPassword}
+              </p>
             )}
           </div>
 
+          {signupError && (
+            <p className="text-red-500 text-sm text-center mb-4">
+              {signupError}
+            </p>
+          )}
           {/* Submit */}
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={loading}
             className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-full py-3 transition-colors duration-200"
           >
-            {isSubmitting ? "Creating account..." : "Sign up"}
+            {loading ? "Creating account..." : "Sign up"}
           </button>
         </form>
 
         {/* Footer */}
-        <p className={`text-center text-sm mt-6 ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+        <p
+          className={`text-center text-sm mt-6 ${isDark ? "text-gray-300" : "text-gray-600"}`}
+        >
           Already have an account?{" "}
-          <Link to="/login" className="text-orange-500 font-semibold hover:underline">
+          <Link
+            to="/login"
+            className="text-orange-500 font-semibold hover:underline"
+          >
             Login
           </Link>
         </p>

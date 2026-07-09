@@ -11,7 +11,9 @@ import Login from "./pages/customer/Login";
 import Cart from "./pages/customer/Cart";
 import Signup from "./pages/customer/Signup";
 import AuthLayout from "./components/common/AuthLayout";
-
+import ProtectedRoute from "./routes/ProtectedRoute";
+import AdminRoute from "./routes/AdminRoute";
+import DashboardHome from "./pages/admin/DashboardHome";
 function App() {
   const [count, setCount] = useState(0);
 
@@ -20,15 +22,21 @@ function App() {
       <Routes>
         <Route element={<Navbar />}>
           <Route path="/" element={<Home />} />
-          <Route path="/menu" element={<MenuItemDetail />} />
           <Route path="/offers" element={<Offers />} />
           <Route path="/restaurants" element={<RestaurantDetail />} />
-          <Route path="/track-order" element={<OrderTracking />} />
-          <Route path="/cart" element={<Cart />} />
+        </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route element={<Navbar />}>
+            <Route path="/track-order" element={<OrderTracking />} />
+            <Route path="/cart" element={<Cart />} />
+          </Route>
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+        </Route>
+        <Route element={<AdminRoute />}>
+          <Route path="/admin" element={<DashboardHome />} />
         </Route>
       </Routes>
     </>

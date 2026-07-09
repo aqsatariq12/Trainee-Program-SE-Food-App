@@ -1,16 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
-
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../redux/slices/authSlice";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, accessToken, refreshToken, loading, error } = useSelector(
+    (state) => state.auth,
+  );
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loginError, setLoginError] = useState("");
 
+  useEffect(() => {
+    if (error) {
+      const message =
+        typeof error === "string" ? error : error.error || "Login failed";
+
+      setLoginError(message);
+
+      const timer = setTimeout(() => {
+        setLoginError("");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -43,14 +64,21 @@ const Login = () => {
     e.preventDefault();
     if (!validate()) return;
 
-    setIsSubmitting(true);
     try {
-      // TODO (backend integration):
-      // dispatch(loginUser(formData)) -> authSlice async thunk
-      // on success -> save token via useAuth, redirect to Home / previous protected route
-      console.log("Login payload:", formData);
-    } finally {
-      setIsSubmitting(false);
+      const result = await dispatch(loginUser(formData)).unwrap();
+      if(result.data.is_admin){
+        navigate("/admin");
+      }
+      else{
+        navigate("/");
+      }
+    } catch (error) {
+      console.log("Error:", error);
+
+      // if (error.response) {
+      //   console.log("Status:", error.response.status);
+      //   console.log("Data:", error.response.data);
+      // }
     }
   };
 
@@ -67,10 +95,14 @@ const Login = () => {
       >
         {/* Header */}
         <div className="text-center mb-8">
-          <p className={`text-sm mb-1 ${isDark ? "text-orange-400" : "text-orange-500"}`}>
+          <p
+            className={`text-sm mb-1 ${isDark ? "text-orange-400" : "text-orange-500"}`}
+          >
             Welcome back
           </p>
-          <h1 className={`text-2xl sm:text-3xl font-extrabold ${isDark ? "text-white" : "text-gray-900"}`}>
+          <h1
+            className={`text-2xl sm:text-3xl font-extrabold ${isDark ? "text-white" : "text-gray-900"}`}
+          >
             Login to your account
           </h1>
         </div>
@@ -135,7 +167,9 @@ const Login = () => {
               </button>
             </div>
             {errors.password && (
-              <p className="text-red-500 text-xs mt-1 ml-2">{errors.password}</p>
+              <p className="text-red-500 text-xs mt-1 ml-2">
+                {errors.password}
+              </p>
             )}
           </div>
 
@@ -152,19 +186,30 @@ const Login = () => {
           </div>
 
           {/* Submit */}
+          {loginError && (
+            <p className="text-red-500 text-sm text-center mb-4">
+              {loginError}
+            </p>
+          )}
+
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={loading}
             className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-full py-3 transition-colors duration-200"
           >
-            {isSubmitting ? "Logging in..." : "Login"}
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
         {/* Footer */}
-        <p className={`text-center text-sm mt-6 ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+        <p
+          className={`text-center text-sm mt-6 ${isDark ? "text-gray-300" : "text-gray-600"}`}
+        >
           Don't have an account?{" "}
-          <Link to="/signup" className="text-orange-500 font-semibold hover:underline">
+          <Link
+            to="/signup"
+            className="text-orange-500 font-semibold hover:underline"
+          >
             Sign up
           </Link>
         </p>

@@ -19,9 +19,8 @@ const categories = [
 function PopularCategories() {
   return (
     <section className="max-w-7xl mx-auto mt-8 px-4">
-
       <h2 className="text-base sm:text-lg lg:text-xl font-bold text-[#03081F] mb-4 sm:mb-6">
-       Order.uk Popular Categories 🤩 
+        Order.uk Popular Categories 🤩
       </h2>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
@@ -34,7 +33,6 @@ function PopularCategories() {
           />
         ))}
       </div>
-
     </section>
   );
 }

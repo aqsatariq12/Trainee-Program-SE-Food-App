@@ -3,7 +3,7 @@ import MenuItems from "../../components/restaurant/MenuItems";
 import RestaurantBanner from "../../components/restaurant/RestaurantBanner";
 import RestaurantInfoSection from "../../components/restaurant/RestaurantInfoSection";
 import LocationMap from "../../components/restaurant/LocationMap";
-import Footer from "../../components/layout/Footer"
+import Footer from "../../components/layout/Footer";
 export default function RestaurantDetail() {
   return (
     <>
