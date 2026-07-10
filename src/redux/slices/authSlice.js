@@ -1,14 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "../../api/axiosInstance";
+import { BASE_URL } from "../../api/api";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (loginData, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/user/login/", loginData);
-      return response.data;
+      const response = await fetch( `${BASE_URL}/user/login/`, 
+        {
+          method: "POST",
+          headers:{
+            "Content-Type":"application/json",
+          },
+          body: JSON.stringify(loginData),
+        }
+      );
+      const data = await response.json();
+      if(!response.ok){
+        return rejectWithValue(data);
+      }
+      return data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Login Failed");
+      return rejectWithValue(error.message || "Login Failed");
     }
   },
 );
@@ -16,13 +28,24 @@ export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (registerData, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(
-        "/user/register/",
-        registerData,
+      const response = await fetch(
+        `${BASE_URL}/user/register/`,{
+          method: "POST",
+          headers:{
+            "Content-Type":"application/json",
+          },
+          body: JSON.stringify(registerData),
+        }
       );
-      return response.data;
+      const data = await response.json();
+      console.log("Register response:", data);
+
+      if(!response.ok){
+        return rejectWithValue(data)
+      }
+      return data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Registration Failed");
+      return rejectWithValue(error.message || "Registration Failed");
     }
   },
 );
@@ -89,16 +112,14 @@ const authSlice = createSlice({
         state.refreshToken = action.payload.token.refresh;
 
         localStorage.setItem("user", JSON.stringify(action.payload.data));
-        localStorage.setItem("accessToken", action.payload.token.access
-        );
-        localStorage.setItem("refreshToken", action.payload.token.refresh);   
+        localStorage.setItem("accessToken", action.payload.token.access);
+        localStorage.setItem("refreshToken", action.payload.token.refresh);
       })
 
-      .addCase(registerUser.rejected,(state, action)=>{
+      .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
-
   },
 });
 

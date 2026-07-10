@@ -4,6 +4,8 @@ import RestaurantBanner from "../../components/restaurant/RestaurantBanner";
 import RestaurantInfoSection from "../../components/restaurant/RestaurantInfoSection";
 import LocationMap from "../../components/restaurant/LocationMap";
 import Footer from "../../components/layout/Footer";
+import PopularRestaurants from "../../components/home/PopularRestaurants";
+import CustomerReviews from "../../components/restaurant/CustomerReviews";
 export default function RestaurantDetail() {
   return (
     <>
@@ -18,6 +20,8 @@ export default function RestaurantDetail() {
       <MenuItems />
       <RestaurantInfoSection />
       <LocationMap />
+      <CustomerReviews/>
+      <PopularRestaurants/>
       <Footer />
     </>
   );

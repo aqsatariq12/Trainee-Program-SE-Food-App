@@ -1,59 +1,67 @@
 import React from "react";
-import fries1 from "../../../assets/images/fries1.png";
-import fries2 from "../../../assets/images/fries2.png";
-import fries3 from "../../../assets/images/fries3.png";
-import fries4 from "../../../assets/images/fries4.png";
-import fries5 from "../../../assets/images/fries5.png";
-import fries6 from "../../../assets/images/fries6.png";
+// import fries1 from "../../../assets/images/fries1.png";
+// import fries2 from "../../../assets/images/fries2.png";
+// import fries3 from "../../../assets/images/fries3.png";
+// import fries4 from "../../../assets/images/fries4.png";
+// import fries5 from "../../../assets/images/fries5.png";
+// import fries6 from "../../../assets/images/fries6.png";
 import plusBgImg from "../../../assets/images/plusBgImg.png";
 import plus from "../../../assets/images/plus.png";
-
+import { useSelector } from "react-redux";
+import menuItems from "../MenuItems";
+import { BASE_URL } from "../../../api/api";
 function Fries() {
-  const FriesCard = [
-    {
-      title: "Royal Cheese Burger with Extra Fries",
-      desc: "1 McChicken™, 1 Big Mac™, 1 Royal Cheeseburger, 3 medium",
-      image: fries1,
-      price: "23.10",
-    },
-    {
-      title: "The classics for 3",
-      desc: "1 McChicken™, 1 Big Mac™, 1 Royal Cheeseburger, 3 medium sized French Fries, 3 cold drinks",
-      image: fries2,
-      price: "23.10",
-    },
-    {
-      title: "The classics for 3",
-      desc: "1 McChicken™, 1 Big Mac™, 1 Royal Cheeseburger, 3 medium sized French Fries, 3 cold drinks",
-      image: fries3,
-      price: "23.10",
-    },
-    {
-      title: "The classics for 3",
-      desc: "1 McChicken™, 1 Big Mac™, 1 Royal Cheeseburger, 3 medium sized French Fries, 3 cold drinks",
-      image: fries4,
-      price: "23.10",
-    },
-    {
-      title: "The classics for 3",
-      desc: "1 McChicken™, 1 Big Mac™, 1 Royal Cheeseburger, 3 medium sized French Fries, 3 cold drinks",
-      image: fries5,
-      price: "23.10",
-    },
-    {
-      title: "The classics for 3",
-      desc: "1 McChicken™, 1 Big Mac™, 1 Royal Cheeseburger, 3 medium sized French Fries, 3 cold drinks",
-      image: fries6,
-      price: "23.10",
-    },
-  ];
+  const { menuItems } = useSelector((state)=> state.menu);
+  const friesItems = menuItems.filter(
+    (item) => item.category.name === "Fries"
+  );
+  // const FriesCard = [
+  //   {
+  //     title: "Royal Cheese Burger with Extra Fries",
+  //     desc: "1 McChicken™, 1 Big Mac™, 1 Royal Cheeseburger, 3 medium",
+  //     image: fries1,
+  //     price: "23.10",
+  //   },
+  //   {
+  //     title: "The classics for 3",
+  //     desc: "1 McChicken™, 1 Big Mac™, 1 Royal Cheeseburger, 3 medium sized French Fries, 3 cold drinks",
+  //     image: fries2,
+  //     price: "23.10",
+  //   },
+  //   {
+  //     title: "The classics for 3",
+  //     desc: "1 McChicken™, 1 Big Mac™, 1 Royal Cheeseburger, 3 medium sized French Fries, 3 cold drinks",
+  //     image: fries3,
+  //     price: "23.10",
+  //   },
+  //   {
+  //     title: "The classics for 3",
+  //     desc: "1 McChicken™, 1 Big Mac™, 1 Royal Cheeseburger, 3 medium sized French Fries, 3 cold drinks",
+  //     image: fries4,
+  //     price: "23.10",
+  //   },
+  //   {
+  //     title: "The classics for 3",
+  //     desc: "1 McChicken™, 1 Big Mac™, 1 Royal Cheeseburger, 3 medium sized French Fries, 3 cold drinks",
+  //     image: fries5,
+  //     price: "23.10",
+  //   },
+  //   {
+  //     title: "The classics for 3",
+  //     desc: "1 McChicken™, 1 Big Mac™, 1 Royal Cheeseburger, 3 medium sized French Fries, 3 cold drinks",
+  //     image: fries6,
+  //     price: "23.10",
+  //   },
+  // ];
+
+
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-10">
       <h1 className="text-3xl font-extrabold text-[#FC8A06] mb-8">Fries</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
-              {FriesCard.map((card, index) => (
+              {friesItems.map((item, index) => (
                 <div
                   key={index}
                   className="bg-white rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.2)] overflow-hidden flex flex-col lg:flex-row justify-between lg:items-center p-5 gap-4"
@@ -63,23 +71,23 @@ function Fries() {
                   <div className="lex flex-col justify-between w-full lg:w-[58%]">
                     <div>
                       <h2 className="text-md font-bold text-[#03081F] leading-6">
-                        {card.title}
+                        {item.name}
                       </h2>
       
                       <p className="text-gray-600 mt-2 text-sm leading-5">
-                        {card.desc}
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Necessitatibus natus repellat sed aliquid velit deleniti!
                       </p>
                     </div>
       
-                    <h3 className="text-md font-bold mt-5">GBP {card.price}</h3>
+                    <h3 className="text-md font-bold mt-5">GBP {item.price}</h3>
                   </div>
       
                   {/* Right Side */}
       
                   <div className="relative w-full lg:w-[160px] h-[120px] sm:h-[140px] md:h-[150px] lg:h-[150px] flex justify-center lg:block flex-shrink-00">
                     <img
-                      src={card.image}
-                      alt={card.title}
+                      src={`${BASE_URL}${item.image}`}
+                      alt={item.name}
                       className="w-32 sm:w-36 md:w-40 lg:w-full h-full object-contain lg:object-fill mx-auto"
                     />
       

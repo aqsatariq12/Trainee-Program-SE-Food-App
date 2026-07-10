@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import searchIcon from "../../assets/icons/search.png";
 import cart from "../../assets/icons/shoppingCart.png";
 import discountPercentageBg from "../../assets/images/discountPercentageBg.png";
@@ -23,24 +23,46 @@ import { HiX, HiMenu } from "react-icons/hi";
 import { IoChevronDown } from "react-icons/io5";
 import { useTheme } from "../../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCategories, fetchMenuItems } from "../../redux/slices/menuSlice";
 function MenuItems() {
   const { theme } = useTheme();
   const navigate = useNavigate();
-  const tabs = [
-    "Offers",
-    "Burgers",
-    "Fries",
-    "Snacks",
-    "Salads",
-    "Cold drinks",
-    "Happy Meal®",
-    "Desserts",
-    "Hot drinks",
-    "Sauces",
-    "Orbit®",
-  ];
 
+  const dispatch = useDispatch();
+  const { categories, menuItems ,loading } = useSelector((state) => state.menu);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+    dispatch(fetchMenuItems());
+  }, [dispatch]);
+
+  // const tabs = [
+  //   "Offers",
+  //   "Burgers",
+  //   "Fries",
+  //   "Snacks",
+  //   "Salads",
+  //   "Cold drinks",
+  //   "Happy Meal®",
+  //   "Desserts",
+  //   "Hot drinks",
+  //   "Sauces",
+  //   "Orbit®",
+  // ];
+  const tabs = [{ id: 0, name: "Offers" }, ...categories];
+  const categoryComponents = {
+    Burgers: <Burger />,
+    Fries: <Fries />,
+    Snacks: <Snacks />,
+    Salads: <Salads />,
+    "Cold drinks": <Drinks />,
+    "Happy Meal": <HappyMeal />,
+    Dessert: <Dessert />,
+    "Hot Drinks": <HotDrinks />,
+    Sauces: <Sauce />,
+    Orbit: <Orbit />,
+  };
   const offers = [
     {
       title: "First Order Discount",
@@ -63,6 +85,15 @@ function MenuItems() {
   ];
   const [activeTab, setActiveTab] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const selectedCategory = tabs[activeTab]?.name;
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <p className="text-xl font-semibold">Loading Categories...</p>
+      </div>
+    );
+  }
   return (
     <>
       <section className="max-w-7xl mx-auto px-6 py-8">
@@ -101,7 +132,7 @@ function MenuItems() {
             : "hover:bg-[#03081F] hover:text-white"
         }`}
             >
-              {tab}
+              {tab.name}
             </button>
           ))}
         </div>
@@ -118,7 +149,7 @@ function MenuItems() {
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-md">{tabs[activeTab]}</span>
+            <span className="text-md"> {tabs[activeTab]?.name}</span>
 
             {menuOpen ? (
               <HiX className="text-2xl" />
@@ -143,7 +174,7 @@ function MenuItems() {
                 className={`w-full text-left px-5 py-3 border border-transparent
           ${activeTab === index ? "bg-[#03081F] text-white" : "hover:border-[#03081F]"}`}
               >
-                {tab}
+                {tab.name}
               </button>
             ))}
           </div>
@@ -216,25 +247,8 @@ function MenuItems() {
         </section>
       )}
 
-      {activeTab === 1 && <Burger />}
+      {selectedCategory !== "Offers" && categoryComponents[selectedCategory]}
 
-      {activeTab === 2 && <Fries />}
-
-      {activeTab === 3 && <Snacks />}
-
-      {activeTab === 4 && <Salads />}
-
-      {activeTab === 5 && <Drinks />}
-
-      {activeTab === 6 && <HappyMeal />}
-
-      {activeTab === 7 && <Dessert />}
-
-      {activeTab === 8 && <HotDrinks />}
-
-      {activeTab === 9 && <Sauce />}
-
-      {activeTab === 10 && <Orbit />}
       <button
         onClick={() => navigate("/cart")}
         className="fixed bottom-6 right-6 z-50 bg-[#FC8A06] p-4 rounded-full shadow-xl hover:scale-110 hover:bg-[#e67a00] transition-transform duration-300 cursor-pointer"

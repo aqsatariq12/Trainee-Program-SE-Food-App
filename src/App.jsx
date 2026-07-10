@@ -14,6 +14,11 @@ import AuthLayout from "./components/common/AuthLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminRoute from "./routes/AdminRoute";
 import DashboardHome from "./pages/admin/DashboardHome";
+import ManageMenu from "./pages/admin/ManageMenu";
+import ManageOrders from "./pages/admin/ManageOrders";
+import Analytics from "./pages/admin/Analytics";
+import AdminLayout from "./components/layout/AdminLayout";
+import Toast from "./components/common/Toast";
 function App() {
   const [count, setCount] = useState(0);
 
@@ -36,9 +41,15 @@ function App() {
           <Route path="/signup" element={<Signup />} />
         </Route>
         <Route element={<AdminRoute />}>
-          <Route path="/admin" element={<DashboardHome />} />
+          <Route element={<AdminLayout />}>
+            <Route path="/admin" element={<DashboardHome />} />
+            <Route path="/manage-menu" element={<ManageMenu />} />
+            <Route path="/manage-order" element={<ManageOrders />} />
+            <Route path="/analytics" element={<Analytics />} />
+          </Route>
         </Route>
       </Routes>
+      <Toast/>
     </>
   );
 }

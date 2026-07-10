@@ -4,7 +4,9 @@ import { useTheme } from "../../context/ThemeContext";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
+import useToast from "../../hooks/useToast";
 const Login = () => {
+  const toast = useToast();
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
@@ -16,22 +18,24 @@ const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  const [loginError, setLoginError] = useState("");
+  // const [loginError, setLoginError] = useState("");
 
-  useEffect(() => {
-    if (error) {
-      const message =
-        typeof error === "string" ? error : error.error || "Login failed";
+  // useEffect(() => {
+  //   if (error) {
+  //     const message =
+  //       typeof error === "string" ? error : error.error || "Login failed";
 
-      setLoginError(message);
+  //     setLoginError(message);
 
-      const timer = setTimeout(() => {
-        setLoginError("");
-      }, 3000);
+  //     const timer = setTimeout(() => {
+  //       setLoginError("");
+  //     }, 3000);
 
-      return () => clearTimeout(timer);
-    }
-  }, [error]);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [error]);
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -66,6 +70,7 @@ const Login = () => {
 
     try {
       const result = await dispatch(loginUser(formData)).unwrap();
+      toast.success(result.message);
       if(result.data.is_admin){
         navigate("/admin");
       }
@@ -73,8 +78,7 @@ const Login = () => {
         navigate("/");
       }
     } catch (error) {
-      console.log("Error:", error);
-
+      toast.error(error.error || "Login Failed" );
       // if (error.response) {
       //   console.log("Status:", error.response.status);
       //   console.log("Data:", error.response.data);
@@ -186,11 +190,6 @@ const Login = () => {
           </div>
 
           {/* Submit */}
-          {loginError && (
-            <p className="text-red-500 text-sm text-center mb-4">
-              {loginError}
-            </p>
-          )}
 
           <button
             type="submit"
