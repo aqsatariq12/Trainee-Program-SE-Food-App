@@ -42,10 +42,29 @@ const restaurants = [
 
 function PopularRestaurants() {
   return (
-    <section className="max-w-7xl mx-auto px-4 py-8 md:py-12">
-      <h2 className="text-[16px] font-semibold mb-6">Popular Restaurants</h2>
+    <section className="max-w-7xl mx-auto mt-8 px-4">
+      <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-5 sm:mb-6">
+        Popular Restaurants
+      </h2>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+      {/* Mobile & Tablet */}
+      <div className="lg:hidden overflow-x-auto overflow-y-hidden pb-2 px-1">
+        <div className="flex gap-1 sm:gap-2 md:gap-3 w-max">
+          {restaurants.map((restaurant) => (
+            <div
+              key={restaurant.id}
+className="flex-shrink-0 w-[125px] sm:w-[145px] md:w-[180px]"            >
+              <RestaurantCard
+                image={restaurant.image}
+                title={restaurant.title}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop */}
+      <div className="hidden lg:grid lg:grid-cols-6 gap-4">
         {restaurants.map((restaurant) => (
           <RestaurantCard
             key={restaurant.id}
