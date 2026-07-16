@@ -11,9 +11,9 @@ const initialState = {
 };
 export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
-      const token = localStorage.getItem("accessToken");
+      const token = getState().auth.accessToken;
 
       const response = await fetch(`${BASE_URL}${ENDPOINTS.GET_CART}`, {
         headers: {
@@ -35,10 +35,10 @@ export const fetchCart = createAsyncThunk(
 );
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
-  async ({ menu_item_id, deal_id }, { rejectWithValue }) => {
-    const token = localStorage.getItem("accessToken");
-
+  async ({ menu_item_id, deal_id }, { rejectWithValue, getState }) => {
+    
     try {
+      const token = getState().auth.accessToken;
       const response = await fetch(`${BASE_URL}${ENDPOINTS.ADD_TO_CART}`, {
         method: "POST",
 
@@ -68,10 +68,10 @@ export const addToCart = createAsyncThunk(
 
 export const updateCartItem = createAsyncThunk(
   "cart/updateCartItem",
-  async ({ itemId, quantity }, { rejectWithValue }) => {
-        const token = localStorage.getItem("accessToken");
-
+  async ({ itemId, quantity }, { rejectWithValue, getState }) => {
+    
     try {
+      const token = getState().auth.accessToken;
       const response = await fetch(
         `${BASE_URL}${ENDPOINTS.UPDATE_CART_ITEM}${itemId}/`,
         {
@@ -102,10 +102,10 @@ export const updateCartItem = createAsyncThunk(
 );
 export const deleteCartItem = createAsyncThunk(
   "cart/deleteCartItem",
-  async (itemId, { rejectWithValue }) => {
-    const token = localStorage.getItem("accessToken");
-
+  async (itemId, { rejectWithValue, getState }) => {
+    
     try {
+      const token = getState().auth.accessToken;
       const response = await fetch(
         `${BASE_URL}${ENDPOINTS.DELETE_CART_ITEM}${itemId}/`,
         {

@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchOrders } from "../../redux/slices/orderSlice";
 import { BASE_URL } from "../../api/api";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function Orders() {
+  const { theme } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -15,7 +17,15 @@ export default function Orders() {
   }, [dispatch]);
 
   if (loading) {
-    return <h2 className="text-center text-2xl mt-20">Loading Orders...</h2>;
+    return (
+      <h2
+        className={`text-center text-2xl mt-20 ${
+          theme === "dark" ? "text-white" : "text-[#03081F]"
+        }`}
+      >
+        Loading Orders...
+      </h2>
+    );
   }
   // const activeOrders = orders.filter(
   //   (order) => order.current_status !== "cancelled",
@@ -34,12 +44,27 @@ export default function Orders() {
   );
 
   return (
-    <section className="min-h-screen bg-[#F7F8FA] py-10">
+    <section
+      className={`min-h-screen py-10 transition-colors duration-300 ${
+        theme === "dark" ? "bg-[#03081F]" : "bg-[#F7F8FA]"
+      }`}
+    >
+      {" "}
       <div className="max-w-6xl mx-auto px-4">
-        <h1 className="text-4xl font-bold mb-10">My Orders</h1>
+        <h1
+          className={`text-4xl font-bold mb-10 ${
+            theme === "dark" ? "text-white" : "text-[#03081F]"
+          }`}
+        >
+          My Orders
+        </h1>
         <button
           onClick={() => navigate("/restaurants")}
-          className="mb-6 text-[#FC8A06] font-semibold"
+          className={`mb-6 font-semibold transition ${
+            theme === "dark"
+              ? "text-orange-400 hover:text-orange-300"
+              : "text-[#FC8A06]"
+          }`}
         >
           ← Back to MenuList
         </button>
@@ -49,7 +74,7 @@ export default function Orders() {
             <div>
               <p className="text-white/80 text-lg ">Total Active Orders</p>
 
-              <h2 className="text-5xl font-extrabold mt-2 text-center">
+              <h2 className="text-4xl md:text-4xl lg:text-5xl font-extrabold mt-2 text-center">
                 {activeOrders.length}
               </h2>
             </div>
@@ -57,7 +82,7 @@ export default function Orders() {
             <div className="text-right">
               <p className="text-white/80 text-lg text-center">Grand Total</p>
 
-              <h2 className="text-5xl font-extrabold mt-2">
+              <h2 className="text-4xl md:text-4xl lg:text-5xl font-extrabold mt-2">
                 $ {grandTotal.toFixed(2)}
               </h2>
             </div>
@@ -65,37 +90,83 @@ export default function Orders() {
         </div>
 
         {activeOrders.length > 0 && (
-          <h1 className="text-3xl font-bold mb-10">Active Orders</h1>
+          <h1
+            className={`text-4xl font-bold mb-10 ${
+              theme === "dark" ? "text-white" : "text-[#03081F]"
+            }`}
+          >
+            Active Orders
+          </h1>
         )}
 
         {activeOrders.length === 0 ? (
-          <div className="bg-white rounded-xl p-10 text-center shadow">
-            <h2 className="text-2xl font-semibold">No Orders Found</h2>
+          <div
+            className={`rounded-xl p-10 text-center shadow ${
+              theme === "dark"
+                ? "bg-[#111827] border border-gray-700"
+                : "bg-white"
+            }`}
+          >
+            <h2
+              className={`text-2xl font-semibold ${
+                theme === "dark" ? "text-white" : "text-[#03081F]"
+              }`}
+            >
+              No Orders Found
+            </h2>
           </div>
         ) : (
           activeOrders.map((order) => (
             <div
               key={order.order_id}
-              className="bg-white rounded-3xl border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-300 p-8 mb-10"
+              className={`rounded-3xl shadow-lg p-8 mb-10 transition-all duration-300 ${
+                theme === "dark"
+                  ? "bg-[#111827] border border-gray-700 hover:border-orange-500"
+                  : "bg-white border border-gray-100 hover:shadow-2xl"
+              }`}
             >
               {/* Header */}
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                 <div>
-                  <h2 className="text-2xl font-bold">
+                  <h2
+                    className={`text-2xl font-bold ${
+                      theme === "dark" ? "text-white" : "text-[#03081F]"
+                    }`}
+                  >
                     Order #{order.order_id}
                   </h2>
 
-                  <p className="text-gray-500 mt-1">{order.restaurant.name}</p>
+                  <p
+                    className={`mt-1 ${
+                      theme === "dark" ? "text-gray-400" : "text-gray-500"
+                    }`}
+                  >
+                    {order.restaurant.name}
+                  </p>
                 </div>
-                <span className="bg-[#FFF4E5] text-[#FC8A06] px-5 py-2 rounded-full text-sm font-semibold capitalize border border-[#FC8A06]/30">
+                <span
+                  className={`px-5 py-2 rounded-full text-sm font-semibold capitalize border ${
+                    theme === "dark"
+                      ? "bg-orange-500/20 text-orange-300 border-orange-500/40"
+                      : "bg-[#FFF4E5] text-[#FC8A06] border-[#FC8A06]/30"
+                  }`}
+                >
                   {order.current_status}
                 </span>
               </div>
 
               {/* Total */}
               <div className="grid md:grid-cols-2 gap-6 mt-8">
-                <div className="bg-gray-50 rounded-2xl p-5">
-                  <p className="text-gray-500 text-sm uppercase tracking-wide">
+                <div
+                  className={`rounded-2xl p-5 ${
+                    theme === "dark" ? "bg-[#1F2937]" : "bg-gray-50"
+                  }`}
+                >
+                  <p
+                    className={`text-sm uppercase tracking-wide ${
+                      theme === "dark" ? "text-gray-400" : "text-gray-500"
+                    }`}
+                  >
                     Total Amount
                   </p>
 
@@ -104,12 +175,22 @@ export default function Orders() {
                   </h2>
                 </div>
 
-                <div className="bg-gray-50 rounded-2xl p-5">
-                  <p className="text-gray-500 text-sm uppercase tracking-wide">
+                <div className={`rounded-2xl p-5 ${
+                    theme === "dark" ? "bg-[#1F2937]" : "bg-gray-50"
+                  }`}>
+                  <p
+                    className={`text-sm uppercase tracking-wide ${
+                      theme === "dark" ? "text-gray-400" : "text-gray-500"
+                    }`}
+                  >
                     Delivery Address
                   </p>
 
-                  <p className="font-semibold text-lg mt-2">
+                  <p
+                    className={`font-semibold text-lg mt-2 ${
+                      theme === "dark" ? "text-white" : "text-[#03081F]"
+                    }`}
+                  >
                     {order.delivery_address}
                   </p>
                 </div>
@@ -119,7 +200,11 @@ export default function Orders() {
                 {order.items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex flex-col md:flex-row gap-5 bg-[#FAFAFA] rounded-2xl border border-gray-100 p-5 hover:bg-white hover:shadow-md transition"
+                    className={`flex flex-col md:flex-row gap-5 rounded-2xl p-5 transition ${
+                      theme === "dark"
+                        ? "bg-[#1F2937] border border-gray-700 hover:bg-[#273449]"
+                        : "bg-[#FAFAFA] border border-gray-100 hover:bg-white hover:shadow-md"
+                    }`}
                   >
                     <div className="flex justify-center md:block">
                       <img
@@ -134,22 +219,40 @@ export default function Orders() {
                     </div>
 
                     <div className="flex-1 text-center md:text-left">
-                      <h3 className="text-lg font-bold text-[#03081F]">
+                      <h3
+                        className={`text-lg font-bold ${
+                          theme === "dark" ? "text-white" : "text-[#03081F]"
+                        }`}
+                      >
                         {item.name}
                       </h3>
 
-                      <p className="text-gray-500 mt-1">
+                      <p
+                        className={`mt-1 ${
+                          theme === "dark" ? "text-gray-400" : "text-gray-500"
+                        }`}
+                      >
                         Qty:
                         <span className="font-semibold">{item.quantity}</span>
                       </p>
 
-                      <p className="text-gray-500">
+                      <p
+                        className={
+                          theme === "dark" ? "text-gray-400" : "text-gray-500"
+                        }
+                      >
                         Unit Price: GBP {Number(item.price_at_order).toFixed(2)}
                       </p>
                     </div>
 
                     <div className="text-center md:text-right">
-                      <p className="text-sm text-gray-500">Subtotal</p>
+                      <p
+                        className={`text-sm ${
+                          theme === "dark" ? "text-gray-400" : "text-gray-500"
+                        }`}
+                      >
+                        Subtotal
+                      </p>
 
                       <p className="text-2xl font-bold text-[#FC8A06]">
                         GBP {Number(item.subtotal).toFixed(2)}
@@ -174,27 +277,47 @@ export default function Orders() {
 
         {orderHistory.length > 0 && (
           <>
-            <h1 className="text-2xl font-bold mb-6">Order History</h1>
+            <h1
+              className={`text-4xl font-bold mb-10 ${
+                theme === "dark" ? "text-white" : "text-[#03081F]"
+              }`}
+            >
+              Order History
+            </h1>
 
             <div className="space-y-4">
               {orderHistory.map((order) => (
                 <div
                   key={order.order_id}
-                  className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition p-5"
+                  className={`rounded-2xl shadow-sm p-5 transition ${
+                    theme === "dark"
+                      ? "bg-[#111827] border border-gray-700 hover:border-orange-500"
+                      : "bg-white border border-gray-200 hover:shadow-md"
+                  }`}
                 >
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     {/* Left */}
                     <div>
-                      <h2 className="text-lg font-bold text-[#03081F]">
+                      <h2
+                        className={`text-lg font-bold ${
+                          theme === "dark" ? "text-white" : "text-[#03081F]"
+                        }`}
+                      >
                         Order #{order.order_id}
                       </h2>
 
-                      <p className="text-sm text-gray-500 mt-1">
+                      <p
+                        className={`text-sm mt-1 ${
+                          theme === "dark" ? "text-gray-400" : "text-gray-500"
+                        }`}
+                      >
                         {order.restaurant.name}
                       </p>
 
                       <div className="flex flex-wrap items-center gap-4 mt-3 text-sm">
-                        <span>
+                        <span
+                          className={theme === "dark" ? "text-gray-300" : ""}
+                        >
                           <strong>{order.items.length}</strong> Items
                         </span>
 

@@ -3,10 +3,19 @@ import ShoppingBasket from "../../assets/icons/ShoppingBasket.png";
 import ForwardButton from "../../assets/icons/ForwardButton.png";
 import Location from "../../assets/icons/Location.png";
 import profileimg from "../../assets/images/profileimg.png";
+import { useTheme } from "../../context/ThemeContext";
 
 function TopBar() {
+  const { theme } = useTheme();
+
   return (
-    <div className="w-full px-5 lg:px-8">
+    <div
+      className={`w-full px-5 lg:px-8  ${
+        theme === "dark"
+          ? "bg-[#03081F]"
+          : "bg-white"
+      }`}
+    >
       <div className="mx-auto max-w-6xl bg-[#FAFAFA] border border-black/10 rounded-b-[12px] overflow-hidden">
         {/* ================= DESKTOP / TABLET ROW ================= */}
         <div className="hidden sm:flex items-center justify-between h-[50px]">

@@ -13,10 +13,13 @@ import {
   deleteCartItem,
   fetchCart,
 } from "../../redux/slices/cartSlice";
-
+import { HiShoppingCart } from "react-icons/hi";
 import { checkoutOrder } from "../../redux/slices/orderSlice";
 import useToast from "../../hooks/useToast";
+import { useTheme } from "../../context/ThemeContext";
+
 export default function Cart() {
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toast = useToast();
@@ -115,7 +118,11 @@ export default function Cart() {
   const remainingAmount = total - paid;
 
   return (
-    <section className="bg-[#F7F8FA] min-h-screen py-10">
+    <section
+      className={`min-h-screen py-10 transition-colors duration-300 ${
+        theme === "dark" ? "bg-[#03081F]" : "bg-[#F7F8FA]"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         {/* Back */}
         <button
@@ -131,46 +138,77 @@ export default function Cart() {
           <div className="xl:col-span-2 space-y-6">
             {/* Cart Card */}
             {/* Heading */}
-            <h1 className="text-3xl font-bold text-gray-900 mb-8 mt-8">
+            <h1
+              className={`text-3xl font-bold mb-8 mt-8 ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}
+            >
               Group order checkout
             </h1>
-            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+            <div
+              className={`rounded-2xl overflow-hidden shadow-sm transition-colors ${
+                theme === "dark"
+                  ? "bg-[#111827] border border-gray-700"
+                  : "bg-white border border-gray-200"
+              }`}
+            >
               {/* Card Header */}
-
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 border-b border-b-gray-300 px-4 sm:px-6 py-5">
+              <div
+                className={`flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 px-4 sm:px-6 py-5 border-b ${
+                  theme === "dark" ? "border-gray-700" : "border-gray-300"
+                }`}
+              >
                 <div className="flex items-center gap-3">
-                  <img src={cart} alt="" className="w-6 h-6" />
-
-                  <h2 className="font-semibold text-lg">My cart</h2>
+                  <HiShoppingCart
+                    className={`w-6 h-6 ${
+                      theme === "dark" ? "text-white" : "text-[#03081F]"
+                    }`}
+                  />
+                  <h2
+                    className={`font-semibold text-lg ${
+                      theme === "dark" ? "text-white" : "text-gray-900"
+                    }`}
+                  >
+                    My cart
+                  </h2>
                 </div>
 
                 {/* <button className="w-full sm:w-auto border border-[#FC8A06] hover:bg-[#FC8A06] hover:text-white transition px-6 py-2 rounded-lg font-semibold text-[#FC8A06]">
                   Confirm
                 </button> */}
               </div>
-
               {/* Cart Items */}
-
               {cartItems.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
-                  <img
-                    src={cart}
-                    alt="Empty Cart"
-                    className="w-20 h-20 opacity-40 mb-6"
+
+                  <HiShoppingCart
+                    className={`w-20 h-20 opacity-100 mb-6 ${
+                      theme === "dark" ? "text-white" : "text-[#03081F]"
+                    }`}
                   />
 
-                  <h2 className="text-2xl font-bold text-[#03081F]">
+                  <h2
+                    className={`text-2xl font-bold ${
+                      theme === "dark" ? "text-white" : "text-[#03081F]"
+                    }`}
+                  >
                     Your cart is empty
                   </h2>
 
-                  <p className="text-gray-500 mt-3 max-w-md leading-7">
+                  <p
+                    className={`mt-3 max-w-md leading-7 ${
+                      theme === "dark" ? "text-gray-400" : "text-gray-500"
+                    }`}
+                  >
                     Looks like you haven't added any delicious items yet. Browse
                     our menu and add your favorite meals to get started.
                   </p>
 
                   <button
                     onClick={() => navigate("/restaurants")}
-                    className="mt-8 bg-[#FC8A06] hover:bg-[#e57905] text-white px-8 py-3 rounded-xl font-semibold transition"
+                    className={`mt-8 bg-[#FC8A06] hover:bg-[#e57905] text-white px-8 py-3 rounded-xl font-semibold transition ${
+                      theme === "dark" ? "text-white" : "text-gray-900"
+                    }`}
                   >
                     Browse Menu
                   </button>
@@ -180,7 +218,9 @@ export default function Cart() {
                   {cartItems.map((item) => (
                     <div
                       key={item.id}
-                      className="flex flex-col md:flex-row gap-5 px-5 sm:px-6 py-6 border-b border-gray-200 last:border-none"
+                      className={`flex flex-col md:flex-row gap-5 px-5 sm:px-6 py-6 border-b last:border-none ${
+                        theme === "dark" ? "border-gray-700" : "border-gray-200"
+                      }`}
                     >
                       {/* Product Image */}
                       <div className="flex justify-center md:block">
@@ -194,11 +234,21 @@ export default function Cart() {
                       {/* Product Details */}
                       <div className="flex-1 flex flex-col justify-between">
                         <div>
-                          <h3 className="text-xl font-bold text-[#03081F]">
+                          <h3
+                            className={`text-xl font-bold ${
+                              theme === "dark" ? "text-white" : "text-[#03081F]"
+                            }`}
+                          >
                             {item.name}
                           </h3>
 
-                          <p className="text-sm text-gray-500 mt-2 leading-6">
+                          <p
+                            className={`text-sm mt-2 leading-6 ${
+                              theme === "dark"
+                                ? "text-gray-400"
+                                : "text-gray-500"
+                            }`}
+                          >
                             {item.description ||
                               "Freshly prepared with premium ingredients and served hot."}
                           </p>
@@ -208,7 +258,13 @@ export default function Cart() {
                         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mt-6">
                           {/* Quantity Controller */}
                           <div className="flex items-center gap-4">
-                            <div className="flex items-center bg-[#FFF7EC] border border-[#FC8A06] rounded-full overflow-hidden shadow-sm">
+                            <div
+                              className={`flex items-center rounded-full overflow-hidden shadow-sm border ${
+                                theme === "dark"
+                                  ? "bg-[#1F2937] border-[#FC8A06]"
+                                  : "bg-[#FFF7EC] border-[#FC8A06]"
+                              }`}
+                            >
                               <button
                                 onClick={() => handleDecrease(item)}
                                 className="w-11 h-11 flex items-center justify-center text-2xl font-bold text-[#FC8A06] hover:bg-[#FC8A06] hover:text-white transition"
@@ -216,7 +272,13 @@ export default function Cart() {
                                 −
                               </button>
 
-                              <span className="w-12 text-center font-bold text-lg text-[#03081F]">
+                              <span
+                                className={`w-12 text-center font-bold text-lg ${
+                                  theme === "dark"
+                                    ? "text-white"
+                                    : "text-[#03081F]"
+                                }`}
+                              >
                                 {item.quantity}
                               </span>
 
@@ -238,9 +300,23 @@ export default function Cart() {
 
                           {/* Price */}
                           <div className="text-left lg:text-right">
-                            <p className="text-sm text-gray-500">Unit Price</p>
+                            <p
+                              className={`text-sm ${
+                                theme === "dark"
+                                  ? "text-gray-400"
+                                  : "text-gray-500"
+                              }`}
+                            >
+                              Unit Price
+                            </p>
 
-                            <p className="font-semibold text-gray-700">
+                            <p
+                              className={`font-semibold ${
+                                theme === "dark"
+                                  ? "text-white"
+                                  : "text-gray-700"
+                              }`}
+                            >
                               $ {Number(item.price).toFixed(2)}
                             </p>
 
@@ -254,7 +330,11 @@ export default function Cart() {
                             Total Price
                           </p>
 
-                          <p className="font-semibold text-gray-700">
+                          <p
+                            className={`font-semibold text-gray-700 ${
+                              theme === "dark" ? "text-white" : "text-gray-900"
+                            }`}
+                          >
                             $ {Number(item.price * item.quantity).toFixed(2)}
                           </p>
 
@@ -282,7 +362,11 @@ export default function Cart() {
                       {/* Totals */}
 
                       <div className="w-full lg:max-w-xs">
-                        <div className="flex justify-between text-gray-900 text-sm font-semibold">
+                        <div
+                          className={`flex justify-between text-gray-900 text-sm font-semibold ${
+                            theme === "dark" ? "text-white" : "text-gray-900"
+                          }`}
+                        >
                           {/* <span>Subtotal</span>
                       <span>43.00 RON</span> */}
                         </div>
@@ -297,7 +381,11 @@ export default function Cart() {
                       <span>-10.00 RON</span> */}
                         </div>
 
-                        <div className="pt-3 flex justify-end items-center font-bold text-2xl">
+                        <div
+                          className={`pt-3 flex justify-end items-center font-bold text-2xl ${
+                            theme === "dark" ? "text-white" : "text-gray-900"
+                          }`}
+                        >
                           <span>GRAND TOTAL:</span>
                           <span className=" ml-4 text-2xl font-bold text-[#FC8A06]">
                             $ {totalPrice}
@@ -315,13 +403,35 @@ export default function Cart() {
 
           <div>
             <div className="">
-              <h2 className="text-3xl font-bold text-gray-900">Total</h2>
+              <h2
+                className={`text-3xl font-bold ${
+                  theme === "dark" ? "text-white" : "text-gray-900"
+                }`}
+              >
+                Total
+              </h2>
 
-              <p className="text-2xl text-gray-700 mb-8">payment</p>
+              <p
+                className={`text-2xl mb-8 ${
+                  theme === "dark" ? "text-gray-300" : "text-gray-700"
+                }`}
+              >
+                payment
+              </p>
 
-              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sticky top-6">
+              <div
+                className={`rounded-2xl shadow-sm p-6 sticky top-6 ${
+                  theme === "dark"
+                    ? "bg-[#111827] border border-gray-700"
+                    : "bg-white border border-gray-200"
+                }`}
+              >
                 <div className="mb-5">
-                  <label className="block text-sm font-semibold mb-2">
+                  <label
+                    className={`block text-sm font-semibold mb-2 ${
+                      theme === "dark" ? "text-white" : "text-[#03081F]"
+                    }`}
+                  >
                     Delivery Address
                   </label>
 
@@ -330,12 +440,20 @@ export default function Cart() {
                     onChange={(e) => setDeliveryAddress(e.target.value)}
                     placeholder="Enter delivery address"
                     rows={3}
-                    className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-[#FC8A06] focus:bg-white focus:ring-4 focus:ring-[#FC8A06]/20 resize-none"
+                    className={`w-full rounded-xl px-4 py-3 outline-none resize-none border ${
+                      theme === "dark"
+                        ? "bg-gray-300 border-gray-600"
+                        : "bg-white border-gray-300"
+                    } focus:border-[#FC8A06] focus:ring-4 focus:ring-[#FC8A06]/20`}
                   />
                 </div>
 
                 <div className="mb-5">
-                  <label className="block text-sm font-semibold text-[#03081F] mb-2">
+                  <label
+                    className={`block text-sm font-semibold mb-2 ${
+                      theme === "dark" ? "text-white" : "text-[#03081F]"
+                    }`}
+                  >
                     Payment Method
                   </label>
 
@@ -343,7 +461,11 @@ export default function Cart() {
                     <select
                       value={paymentMethod}
                       onChange={(e) => setPaymentMethod(e.target.value)}
-                      className="w-full appearance-none rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 pr-12 text-gray-700 shadow-sm outline-none transition-all duration-200 focus:border-[#FC8A06] focus:bg-white focus:ring-4 focus:ring-[#FC8A06]/20 cursor-pointer"
+                      className={`w-full appearance-none rounded-xl px-4 py-3 pr-12 shadow-sm outline-none cursor-pointer border ${
+                        theme === "dark"
+                          ? "bg-gray-300 border-gray-600"
+                          : "bg-gray-50 border-gray-300"
+                      } focus:border-[#FC8A06] focus:ring-4 focus:ring-[#FC8A06]/20`}
                     >
                       <option value="cash">Cash on Delivery</option>
                       <option value="stripe">Stripe</option>
@@ -360,7 +482,11 @@ export default function Cart() {
                     )}
 
                     {/* Custom Arrow */}
-                    <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-gray-500">
+                    <div
+                      className={`pointer-events-none absolute inset-y-0 right-4 flex items-center ${
+                        theme === "dark" ? "text-gray-400" : "text-gray-500"
+                      }`}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5"
@@ -383,28 +509,80 @@ export default function Cart() {
 
                 <div className="space-y-4 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Subtotal</span>
-                    <span className="font-semibold">
+                    <span
+                      className={`${
+                        theme === "dark" ? "text-gray-400" : "text-gray-500"
+                      }`}
+                    >
+                      Subtotal
+                    </span>
+                    <span
+                      className={`font-semibold ${
+                        theme === "dark" ? "text-white" : "text-gray-900"
+                      }`}
+                    >
                       $ {subtotal.toFixed(2)}
                     </span>
                   </div>
 
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Delivery Fee</span>
-                    <span>$ {deliveryFee.toFixed(2)}</span>
+                    <span
+                      className={`${
+                        theme === "dark" ? "text-gray-400" : "text-gray-500"
+                      }`}
+                    >
+                      Delivery Fee
+                    </span>
+                    <span
+                      className={`font-semibold ${
+                        theme === "dark" ? "text-white" : "text-gray-900"
+                      }`}
+                    >
+                      $ {deliveryFee.toFixed(2)}
+                    </span>
                   </div>
 
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Discount</span>
-                    <span>- $ {discount.toFixed(2)}</span>
+                    <span
+                      className={`${
+                        theme === "dark" ? "text-gray-400" : "text-gray-500"
+                      }`}
+                    >
+                      Discount
+                    </span>
+                    <span
+                      className={`font-semibold ${
+                        theme === "dark" ? "text-white" : "text-gray-900"
+                      }`}
+                    >
+                      - $ {discount.toFixed(2)}
+                    </span>
                   </div>
 
                   <div className="pt-4 flex justify-between">
-                    <span className="font-medium">Paid</span>
-                    <span>$ {paid.toFixed(2)}</span>
+                    <span
+                      className={`${
+                        theme === "dark" ? "text-gray-400" : "text-gray-500"
+                      }`}
+                    >
+                      Paid
+                    </span>
+                    <span
+                      className={`font-semibold ${
+                        theme === "dark" ? "text-white" : "text-gray-900"
+                      }`}
+                    >
+                      $ {paid.toFixed(2)}
+                    </span>
                   </div>
 
-                  <div className="pt-4 flex justify-between text-lg font-bold border-t border-gray-400">
+                  <div
+                    className={`pt-4 flex justify-between text-lg font-bold border-t ${
+                      theme === "dark"
+                        ? "border-gray-700 text-white"
+                        : "border-gray-400 text-gray-900"
+                    }`}
+                  >
                     <span>Remaining Amount</span>
                     <span className="text-[#FC8A06]">
                       $ {remainingAmount.toFixed(2)}
@@ -419,9 +597,10 @@ export default function Cart() {
                   disabled={cartItems.length === 0}
                   className={`w-full rounded-xl py-4 font-semibold mt-8 transition ${
                     cartItems.length === 0
-                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      ? "bg-gray-300  cursor-not-allowed"
                       : "bg-[#FC8A06] hover:bg-[#e57905] text-white"
-                  }`}
+                  }
+                  ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
                 >
                   {cartItems.length === 0 ? "Cart is Empty" : "Send Order"}
                 </button>
@@ -429,7 +608,9 @@ export default function Cart() {
                 {/* Note */}
               </div>
             </div>
-            <p className="text-xs text-gray-500 leading-6 mt-8">
+            <p
+              className={`text-xs leading-6 mt-8 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+            >
               In the case of a group order, the delivery cost is paid
               individually and the balance is refunded based on the total
               amount.

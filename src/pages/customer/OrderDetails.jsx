@@ -4,8 +4,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../../api/api";
 import { fetchSingleOrder, cancelOrder } from "../../redux/slices/orderSlice";
 import { toast } from "react-toastify";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function OrderDetails() {
+  const { theme } = useTheme();
+
   const { id } = useParams();
   const [showCancelModal, setShowCancelModal] = useState(false);
   const dispatch = useDispatch();
@@ -32,23 +35,48 @@ export default function OrderDetails() {
   };
 
   if (loading) {
-    return <h2 className="text-center text-2xl mt-20">Loading Order...</h2>;
+    return (
+      <h2
+        className={`text-center text-2xl mt-20 ${
+          theme === "dark" ? "text-white" : "text-[#03081F]"
+        }`}
+      >
+        Loading Order...
+      </h2>
+    );
   }
 
   if (!currentOrder) {
-    return <h2 className="text-center text-2xl mt-20">Order Not Found</h2>;
+    return (
+      <h2
+        className={`text-center text-2xl mt-20 ${
+          theme === "dark" ? "text-white" : "text-[#03081F]"
+        }`}
+      >
+        Order Not Found
+      </h2>
+    );
   }
   const canCancel = ["pending", "accepted"].includes(
     currentOrder.current_status,
   );
 
   return (
-    <section className="min-h-screen bg-[#F7F8FA] py-10">
+    <section
+      className={`min-h-screen py-10 transition-colors duration-300 ${
+        theme === "dark" ? "bg-[#03081F]" : "bg-[#F7F8FA]"
+      }`}
+    >
+      {" "}
       <div className="max-w-7xl mx-auto px-4">
         {/* Back Button */}
         <button
           onClick={() => navigate("/orders")}
-          className="mb-6 text-[#FC8A06] font-semibold"
+          className={`mb-6 font-semibold transition ${
+            theme === "dark"
+              ? "text-orange-400 hover:text-orange-300"
+              : "text-[#FC8A06]"
+          }`}
         >
           ← Back to Orders
         </button>
@@ -65,7 +93,7 @@ export default function OrderDetails() {
                 {currentOrder.restaurant.name}
               </p>
 
-              <p className="text-5xl font-extrabold mt-6">
+              <p className="text-4xl md:text-4xl lg:text-5xl font-extrabold mt-6">
                 $ {Number(currentOrder.total_price).toFixed(2)}
               </p>
             </div>
@@ -106,24 +134,74 @@ transition"
         </div>
 
         {/* Order Summary */}
-        <div className="bg-white rounded-2xl shadow p-6 mb-8">
-          <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
+        <div
+          className={`rounded-2xl shadow p-6 mb-8 transition-colors ${
+            theme === "dark"
+              ? "bg-[#111827] border border-gray-700"
+              : "bg-white"
+          }`}
+        >
+          <h2
+            className={`text-2xl font-bold mb-6 ${
+              theme === "dark" ? "text-white" : "text-[#03081F]"
+            }`}
+          >
+            Order Summary
+          </h2>
 
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-[#FAFAFA] rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition">
-              <p className="text-gray-500">Restaurant</p>
+            <div
+              className={`rounded-2xl p-6 border transition ${
+                theme === "dark"
+                  ? "bg-[#1F2937] border-gray-700 hover:bg-[#273449]"
+                  : "bg-[#FAFAFA] border-gray-100 hover:shadow-lg"
+              }`}
+            >
+              <p
+                className={theme === "dark" ? "text-gray-400" : "text-gray-500"}
+              >
+                Restaurant
+              </p>
 
-              <p className="font-semibold">{currentOrder.restaurant.name}</p>
+              <p
+                className={`font-semibold ${
+                  theme === "dark" ? "text-white" : "text-[#03081F]"
+                }`}
+              >
+                {currentOrder.restaurant.name}
+              </p>
             </div>
 
-            <div className="bg-[#FAFAFA] rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition">
-              <p className="text-gray-500">Delivery Address</p>
+            <div className={`rounded-2xl p-6 border transition ${
+                theme === "dark"
+                  ? "bg-[#1F2937] border-gray-700 hover:bg-[#273449]"
+                  : "bg-[#FAFAFA] border-gray-100 hover:shadow-lg"
+              }`}>
+              <p
+                className={theme === "dark" ? "text-gray-400" : "text-gray-500"}
+              >
+                Delivery Address
+              </p>
 
-              <p className="font-semibold">{currentOrder.delivery_address}</p>
+              <p
+                className={`font-semibold ${
+                  theme === "dark" ? "text-white" : "text-[#03081F]"
+                }`}
+              >
+                {currentOrder.delivery_address}
+              </p>
             </div>
 
-            <div className="bg-[#FAFAFA] rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition">
-              <p className="text-gray-500">Total Price</p>
+            <div className={`rounded-2xl p-6 border transition ${
+                theme === "dark"
+                  ? "bg-[#1F2937] border-gray-700 hover:bg-[#273449]"
+                  : "bg-[#FAFAFA] border-gray-100 hover:shadow-lg"
+              }`}>
+              <p
+                className={theme === "dark" ? "text-gray-400" : "text-gray-500"}
+              >
+                Total Price
+              </p>
 
               <p className="text-2xl font-bold text-[#FC8A06]">
                 $ {currentOrder.total_price}
@@ -131,9 +209,17 @@ transition"
             </div>
 
             <div>
-              <p className="text-gray-500">Created At</p>
+              <p
+                className={theme === "dark" ? "text-gray-400" : "text-gray-500"}
+              >
+                Created At
+              </p>
 
-              <p className="font-semibold">
+              <p
+                className={`font-semibold ${
+                  theme === "dark" ? "text-white" : "text-[#03081F]"
+                }`}
+              >
                 {new Date(currentOrder.created_at).toLocaleString()}
               </p>
             </div>
@@ -142,22 +228,29 @@ transition"
 
         {/* Ordered Items */}
         <div
-          className="bg-white
-rounded-3xl
-border
-border-gray-100
-shadow-sm
-hover:shadow-xl
-transition
-p-6"
+          className={`rounded-3xl border shadow-sm transition p-6 ${
+            theme === "dark"
+              ? "bg-[#111827] border-gray-700"
+              : "bg-white border-gray-100 hover:shadow-xl"
+          }`}
         >
-          <h2 className="text-2xl font-bold mb-6">Ordered Items</h2>
+          <h2
+            className={`text-2xl font-bold mb-6 ${
+              theme === "dark" ? "text-white" : "text-[#03081F]"
+            }`}
+          >
+            Ordered Items
+          </h2>
 
           <div className="space-y-5">
             {currentOrder.items.map((item) => (
               <div
                 key={item.id}
-                className="flex flex-col md:flex-row gap-5 border border-gray-300 rounded-xl p-4"
+                className={`flex flex-col md:flex-row gap-5 rounded-xl p-4 border transition ${
+                  theme === "dark"
+                    ? "bg-[#1F2937] border-gray-700 hover:bg-[#273449]"
+                    : "border-gray-300"
+                }`}
               >
                 <img
                   src={
@@ -170,24 +263,50 @@ p-6"
                 />
 
                 <div className="flex-1">
-                  <h3 className="text-2xl font-bold">{item.name}</h3>
+                  <h3
+                    className={`text-2xl font-bold ${
+                      theme === "dark" ? "text-white" : "text-[#03081F]"
+                    }`}
+                  >
+                    {item.name}
+                  </h3>
 
                   <p className="mt-2">
-                    <span className="bg-[#FFF5E8] text-[#FC8A06] px-4 py-2 rounded-full font-semibold">
+                    <span
+                      className={`px-4 py-2 rounded-full font-semibold ${
+                        theme === "dark"
+                          ? "bg-orange-500/20 text-orange-300"
+                          : "bg-[#FFF5E8] text-[#FC8A06]"
+                      }`}
+                    >
                       Qty : {item.quantity}
                     </span>
                   </p>
 
-                  <p>
+                  <p
+                    className={`mt-3 ${
+                      theme === "dark" ? "text-gray-300" : "text-[#03081F]"
+                    }`}
+                  >
                     Unit Price :
-                    <span className="font-semibold">
+                    <span
+                      className={`font-semibold ${
+                        theme === "dark" ? "text-white" : "text-[#03081F]"
+                      }`}
+                    >
                       $ {item.price_at_order}
                     </span>
                   </p>
                 </div>
 
                 <div className="text-right">
-                  <p className="text-gray-500">Subtotal</p>
+                  <p
+                    className={
+                      theme === "dark" ? "text-gray-400" : "text-gray-500"
+                    }
+                  >
+                    Subtotal
+                  </p>
 
                   <p className="text-xl font-bold text-[#FC8A06]">
                     $ {item.subtotal}
@@ -199,8 +318,20 @@ p-6"
         </div>
 
         {/* Status History */}
-        <div className="bg-white rounded-2xl shadow p-6 mt-4">
-          <h2 className="text-2xl font-bold mb-6">Status History</h2>
+        <div
+          className={`rounded-2xl shadow p-6 mt-4 ${
+            theme === "dark"
+              ? "bg-[#111827] border border-gray-700"
+              : "bg-white"
+          }`}
+        >
+          <h2
+            className={`text-2xl font-bold mb-6 ${
+              theme === "dark" ? "text-white" : "text-[#03081F]"
+            }`}
+          >
+            Status History
+          </h2>
 
           <div className="space-y-6">
             {currentOrder.status_history.map((history) => (
@@ -208,13 +339,27 @@ p-6"
                 key={history.id}
                 className="border-l-4 border-[#FC8A06] pl-5"
               >
-                <h3 className="font-bold capitalize">{history.status}</h3>
+                <h3
+                  className={`font-bold capitalize ${
+                    theme === "dark" ? "text-white" : "text-[#03081F]"
+                  }`}
+                >
+                  {history.status}
+                </h3>
 
-                <p className="text-gray-500">
+                <p
+                  className={
+                    theme === "dark" ? "text-gray-400" : "text-gray-500"
+                  }
+                >
                   Changed By : {history.changed_by.username}
                 </p>
 
-                <p className="text-sm text-gray-400">
+                <p
+                  className={`text-sm ${
+                    theme === "dark" ? "text-gray-500" : "text-gray-400"
+                  }`}
+                >
                   {new Date(history.timestamp).toLocaleString()}
                 </p>
               </div>
@@ -224,10 +369,26 @@ p-6"
       </div>
       {showCancelModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
-            <h2 className="text-2xl font-bold text-[#03081F]">Cancel Order</h2>
+          <div
+            className={`w-full max-w-md rounded-2xl p-6 shadow-2xl ${
+              theme === "dark"
+                ? "bg-[#111827] border border-gray-700"
+                : "bg-white"
+            }`}
+          >
+            <h2
+              className={`text-2xl font-bold ${
+                theme === "dark" ? "text-white" : "text-[#03081F]"
+              }`}
+            >
+              Cancel Order
+            </h2>
 
-            <p className="mt-3 text-gray-600 leading-7">
+            <p
+              className={`mt-3 leading-7 ${
+                theme === "dark" ? "text-gray-400" : "text-gray-600"
+              }`}
+            >
               Are you sure you want to cancel this order? This action cannot be
               undone.
             </p>
@@ -235,7 +396,11 @@ p-6"
             <div className="mt-8 flex justify-end gap-3">
               <button
                 onClick={() => setShowCancelModal(false)}
-                className="rounded-xl border border-gray-300 px-6 py-3 font-medium hover:bg-gray-100 transition"
+                className={`rounded-xl px-6 py-3 font-medium transition border ${
+                  theme === "dark"
+                    ? "border-gray-600 text-white hover:bg-[#1F2937]"
+                    : "border-gray-300 hover:bg-gray-100"
+                }`}
               >
                 No
               </button>

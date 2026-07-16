@@ -11,9 +11,9 @@ const initialState = {
 
 export const fetchCategories = createAsyncThunk(
   "menu/fetchCategories",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
-      const token = localStorage.getItem("accessToken");
+      const token = getState().auth.accessToken;
 
       const response = await fetch(
         `${BASE_URL}${ENDPOINTS.GET_ALL_CATEGORIES}`,
@@ -39,9 +39,9 @@ export const fetchCategories = createAsyncThunk(
 
 export const fetchMenuItems = createAsyncThunk(
   "menu/fetchMenuItems",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
-      const token = localStorage.getItem("accessToken");
+      const token = getState().auth.accessToken;
 
       const response = await fetch(
         `${BASE_URL}${ENDPOINTS.GET_ALL_MENU_ITEMS}`,

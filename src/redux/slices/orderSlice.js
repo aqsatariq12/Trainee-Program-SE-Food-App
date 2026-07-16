@@ -17,9 +17,9 @@ const initialState = {
 
 export const checkoutOrder = createAsyncThunk(
   "order/checkoutOrder",
-  async (checkoutData, { rejectWithValue }) => {
-    const token = localStorage.getItem("accessToken");
+  async (checkoutData, { rejectWithValue, getState }) => {
     try {
+      const token = getState().auth.accessToken;
       const response = await fetch(`${BASE_URL}${ENDPOINTS.CHECKOUT}`, {
         method: "POST",
         headers: {
@@ -45,9 +45,9 @@ export const checkoutOrder = createAsyncThunk(
 export const fetchOrders = createAsyncThunk(
   "order/fetchOrders",
 
-  async (_, { rejectWithValue }) => {
-    const token = localStorage.getItem("accessToken");
+  async (_, { rejectWithValue, getState }) => {
     try {
+      const token = getState().auth.accessToken;
       const response = await fetch(`${BASE_URL}${ENDPOINTS.GET_ORDERS}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -69,9 +69,9 @@ export const fetchOrders = createAsyncThunk(
 export const fetchSingleOrder = createAsyncThunk(
   "order/fetchSingleOrder",
 
-  async (orderId, { rejectWithValue }) => {
-    const token = localStorage.getItem("accessToken");
+  async (orderId, { rejectWithValue, getState }) => {
     try {
+      const token = getState().auth.accessToken;
       const response = await fetch(
         `${BASE_URL}${ENDPOINTS.GET_SINGLE_ORDER}${orderId}`,
         {
@@ -96,9 +96,9 @@ export const fetchSingleOrder = createAsyncThunk(
 export const cancelOrder = createAsyncThunk(
   "order/cancelOrder",
 
-  async (orderId, { rejectWithValue }) => {
-    const token = localStorage.getItem("accessToken");
+  async (orderId, { rejectWithValue, getState }) => {
     try {
+      const token = getState().auth.accessToken;
       const response = await fetch(
         `${BASE_URL}${ENDPOINTS.CANCEL_ORDER}${orderId}/cancel/`,
         {
