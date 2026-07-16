@@ -5,10 +5,10 @@ import plus from "../../../assets/images/plus.png";
 import MenuItems from "../MenuItems";
 import { useSelector } from "react-redux";
 function Burger() {
-    const { menuItems } = useSelector((state) => state.menu);
-    const burgerItems = menuItems.filter(
-      (item) => item.category.name === "Burgers"
-    );
+  const { menuItems } = useSelector((state) => state.menu);
+  const burgerItems = menuItems.filter(
+    (item) => item.category.name === "Burgers",
+  );
   return (
     <section className="max-w-7xl mx-auto px-4 py-10">
       <h1 className="text-3xl font-extrabold text-[#03081F] mb-8">Burgers</h1>
@@ -28,11 +28,11 @@ function Burger() {
                 </h2>
 
                 <p className="text-gray-600 mt-2 text-sm leading-5">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis rerum sed officia pariatur esse
+                  {item.description}
                 </p>
               </div>
 
-              <h3 className="text-md font-bold mt-5">GBP {item.price}</h3>
+              <h3 className="text-md font-bold mt-5">$ {item.price}</h3>
             </div>
 
             {/* Right Side */}

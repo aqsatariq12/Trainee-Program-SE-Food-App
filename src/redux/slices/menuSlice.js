@@ -4,7 +4,7 @@ import { ENDPOINTS } from "../../api/endpoints";
 
 const initialState = {
   categories: [],
-  menuItems:[],
+  menuItems: [],
   loading: false,
   error: null,
 };
@@ -13,45 +13,57 @@ export const fetchCategories = createAsyncThunk(
   "menu/fetchCategories",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${BASE_URL}${ENDPOINTS.GET_ALL_CATEGORIES}`,{
-        method: "GET",
-      });
+      const token = localStorage.getItem("accessToken");
+
+      const response = await fetch(
+        `${BASE_URL}${ENDPOINTS.GET_ALL_CATEGORIES}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
 
       const data = await response.json();
-      if(!response.ok){
+      if (!response.ok) {
         return rejectWithValue(data);
       }
       return data;
     } catch (error) {
-      return rejectWithValue(
-        error.message || "Failed to Fetch Categories",
-      );
+      return rejectWithValue(error.message || "Failed to Fetch Categories");
     }
   },
 );
 
 export const fetchMenuItems = createAsyncThunk(
-"menu/fetchMenuItems",
-async(_, {rejectWithValue}) =>{
-  try{
-    const response = await fetch(`${BASE_URL}${ENDPOINTS.GET_ALL_MENU_ITEMS}`,
-      {
-        method: "GET",
+  "menu/fetchMenuItems",
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+
+      const response = await fetch(
+        `${BASE_URL}${ENDPOINTS.GET_ALL_MENU_ITEMS}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      const data = await response.json();
+      console.log(data);
+
+      if (!response.ok) {
+        return rejectWithValue(data);
       }
-    );
-    const data = await response.json();
-    console.log(data);
-
-    if(!response.ok){
-      return rejectWithValue(data);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message || "Failed to Fetch Menu Items");
     }
-    return data;
-  }
-  catch(error){
-    return rejectWithValue(error.message || "Failed to Fetch Menu Items");
-  }
-}
-
+  },
 );
 
 const menuSlice = createSlice({
@@ -72,19 +84,18 @@ const menuSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(fetchMenuItems.pending, (state)=>{
+      .addCase(fetchMenuItems.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchMenuItems.fulfilled, (state, action)=>{
+      .addCase(fetchMenuItems.fulfilled, (state, action) => {
         state.loading = false;
         state.menuItems = action.payload.data;
       })
-      .addCase(fetchMenuItems.rejected, (state,action)=>{
+      .addCase(fetchMenuItems.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
-      
   },
 });
 

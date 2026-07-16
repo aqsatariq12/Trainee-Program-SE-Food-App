@@ -68,7 +68,7 @@ function HappyMeal() {
                 </p>
               </div>
 
-              <h3 className="text-md font-bold mt-5">GBP {card.price}</h3>
+              <h3 className="text-md font-bold mt-5">$ {card.price}</h3>
             </div>
 
             {/* Right Side */}

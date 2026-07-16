@@ -6,7 +6,6 @@ import Home from "./pages/customer/Home";
 import MenuItemDetail from "./pages/customer/MenuItemDetail";
 import Offers from "./pages/customer/Offers";
 import RestaurantDetail from "./pages/customer/RestaurantDetail";
-import OrderTracking from "./pages/customer/OrderTracking";
 import Login from "./pages/customer/Login";
 import Cart from "./pages/customer/Cart";
 import Signup from "./pages/customer/Signup";
@@ -19,6 +18,10 @@ import ManageOrders from "./pages/admin/ManageOrders";
 import Analytics from "./pages/admin/Analytics";
 import AdminLayout from "./components/layout/AdminLayout";
 import Toast from "./components/common/Toast";
+import Orders from "./pages/customer/Orders";
+import OrderDetails from "./pages/customer/OrderDetails";
+import DealDetail from "./pages/customer/DealDetail";
+
 function App() {
   const [count, setCount] = useState(0);
 
@@ -29,10 +32,14 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/offers" element={<Offers />} />
           <Route path="/restaurants" element={<RestaurantDetail />} />
+                    <Route path="/deal/:id" element={<DealDetail />} />
+
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route element={<Navbar />}>
-            <Route path="/track-order" element={<OrderTracking />} />
+            <Route path="/track-order" element={<Orders />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/orders/:id" element={<OrderDetails />} />
             <Route path="/cart" element={<Cart />} />
           </Route>
         </Route>
@@ -49,7 +56,7 @@ function App() {
           </Route>
         </Route>
       </Routes>
-      <Toast/>
+      <Toast />
     </>
   );
 }
