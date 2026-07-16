@@ -202,6 +202,14 @@ function MenuItems() {
       </div>
 
       {/* --- VIEW 1: Offers Tab Active (Offers + All Categories) --- */}
+      {/* Header Title */}
+      <section className="max-w-7xl mx-auto px-6 pt-10">
+        <div className="flex items-center justify-between gap-3">
+          <h1 className="text-[#FC8A06] text-xl sm:text-2xl lg:text-3xl font-bold flex-1">
+            {activeTab === 0 ? "All Offers" : `${selectedCategory}`}
+          </h1>
+        </div>
+      </section>
       {activeTab === 0 && (
         <section className="max-w-7xl mx-auto px-4 py-10">
           {/* Top Offers Slider Grid */}
@@ -253,15 +261,6 @@ function MenuItems() {
           </div>
         </section>
       )}
-
-      {/* Header Title */}
-      <section className="max-w-7xl mx-auto px-6 pt-10">
-        <div className="flex items-center justify-between gap-3">
-          <h1 className="text-[#FC8A06] text-xl sm:text-2xl lg:text-3xl font-bold flex-1">
-            {activeTab === 0 ? "All Offers" : `${selectedCategory}`}
-          </h1>
-        </div>
-      </section>
 
       {/* --- VIEW 2: Single Specific Category Tab Active --- */}
       {selectedCategory !== "Offers" && (
