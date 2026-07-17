@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
+// import { Navigate } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Home from "./pages/customer/Home";
 import MenuItemDetail from "./pages/customer/MenuItemDetail";
@@ -21,22 +22,19 @@ import Toast from "./components/common/Toast";
 import Orders from "./pages/customer/Orders";
 import OrderDetails from "./pages/customer/OrderDetails";
 import DealDetail from "./pages/customer/DealDetail";
-
+import NotFound from "./pages/NotFound";
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
       <Routes>
-        <Route element={<Navbar />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/offers" element={<Offers />} />
-          <Route path="/restaurants" element={<RestaurantDetail />} />
-                    <Route path="/deal/:id" element={<DealDetail />} />
-
-        </Route>
         <Route element={<ProtectedRoute />}>
           <Route element={<Navbar />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/offers" element={<Offers />} />
+            <Route path="/restaurants" element={<RestaurantDetail />} />
+            <Route path="/deal/:id" element={<DealDetail />} />
             <Route path="/track-order" element={<Orders />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/orders/:id" element={<OrderDetails />} />
@@ -55,6 +53,8 @@ function App() {
             <Route path="/analytics" element={<Analytics />} />
           </Route>
         </Route>
+        {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Toast />
     </>

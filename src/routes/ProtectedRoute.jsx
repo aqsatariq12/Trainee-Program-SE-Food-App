@@ -1,11 +1,16 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const ProtectedRoute =() =>{
-    const {user} = useSelector((state)=>state.auth);
-    if(!user){
-        return <Navigate to="/login" replace/>;
-    }
-    return <Outlet />
-};
-export default ProtectedRoute;
+export default function ProtectedRoute() {
+  const { accessToken, user } = useSelector((state) => state.auth);
+
+  if (!accessToken) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (user?.is_admin) {
+    return <Navigate to="/admin" replace />;
+  }
+
+  return <Outlet />;
+}

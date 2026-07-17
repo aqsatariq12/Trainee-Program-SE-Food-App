@@ -17,8 +17,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const dispatch = useDispatch();
-  const { accessToken } = useSelector((state) => state.auth);
-
+  const { accessToken, user } = useSelector((state) => state.auth);
   const isLoggedIn = !!accessToken;
   const handleLogout = () => {
     dispatch(logout());
@@ -85,22 +84,36 @@ export default function Navbar() {
                 </button>
               </div>
 
+              <div className="flex items-center gap-7">
+                <h3
+                  className={`text-sm lg:text-base xl:text-lg font-semibold max-w-[180px] truncate ${
+                    theme === "dark" ? "text-white" : "text-[#03081F]"
+                  }`}
+                >
+                  <span className="font-normal text-gray-500 dark:text-gray-400">
+                    Welcome,
+                  </span>{" "}
+                  <span className="font-bold text-[#FC8A06]">
+                    {user?.username}
+                  </span>
+                </h3>{" "}
+                <button
+                  onClick={isLoggedIn ? handleLogout : () => navigate("/login")}
+                  className={`hidden lg:flex items-center gap-2 px-4 py-3 rounded-full transition ${
+                    theme === "dark"
+                      ? "bg-[#FC8A06] hover:bg-orange-600 text-white"
+                      : "bg-[#03081F] hover:bg-gray-800 text-white"
+                  }`}
+                >
+                  <img
+                    src={theme === "dark" ? maleuserDark : maleuser}
+                    alt="User"
+                    className="lg:w-6 xl:w-8 h-auto"
+                  />
+                  <span>{isLoggedIn ? "Logout" : "Login / Signup"}</span>
+                </button>
+              </div>
               {/* Desktop Login Button */}
-              <button
-                onClick={isLoggedIn ? handleLogout : () => navigate("/login")}
-                className={`hidden lg:flex items-center gap-2 px-4 py-3 rounded-full transition ${
-                  theme === "dark"
-                    ? "bg-[#FC8A06] hover:bg-orange-600 text-white"
-                    : "bg-[#03081F] hover:bg-gray-800 text-white"
-                }`}
-              >
-                <img
-                  src={theme === "dark"? maleuserDark : maleuser}
-                  alt="User"
-                  className="lg:w-6 xl:w-8 h-auto"
-                />
-                <span>{isLoggedIn ? "Logout" : "Login / Signup"}</span>
-              </button>
               {/* Mobile Toggle */}
               <button
                 className={`lg:hidden text-3xl ${
@@ -168,7 +181,11 @@ export default function Navbar() {
                       : "bg-[#03081F] text-white"
                   }`}
                 >
-                  <img src={theme === "dark"? maleuserDark : maleuser} alt="User" className="w-5 h-5" />
+                  <img
+                    src={theme === "dark" ? maleuserDark : maleuser}
+                    alt="User"
+                    className="w-5 h-5"
+                  />
                   {isLoggedIn ? "Logout" : "Login / Signup"}
                 </button>
               </div>
