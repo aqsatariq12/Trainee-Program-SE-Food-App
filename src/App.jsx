@@ -17,7 +17,7 @@ import DashboardHome from "./pages/admin/DashboardHome";
 import ManageMenu from "./pages/admin/ManageMenu";
 import ManageOrders from "./pages/admin/ManageOrders";
 import Analytics from "./pages/admin/Analytics";
-import AdminLayout from "./components/layout/AdminLayout";
+import AdminSidebar from "./components/layout/AdminSidebar.jsx";
 import Toast from "./components/common/Toast";
 import Orders from "./pages/customer/Orders";
 import OrderDetails from "./pages/customer/OrderDetails";
@@ -46,7 +46,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
         </Route>
         <Route element={<AdminRoute />}>
-          <Route element={<AdminLayout />}>
+          <Route element={<AdminSidebar />}>
             <Route path="/admin" element={<DashboardHome />} />
             <Route path="/manage-menu" element={<ManageMenu />} />
             <Route path="/manage-order" element={<ManageOrders />} />
