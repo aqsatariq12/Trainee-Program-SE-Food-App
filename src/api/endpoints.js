@@ -19,6 +19,10 @@ export const ENDPOINTS = {
   GET_ALL_ORDERS: "/order/admin/orders",
   UPDATE_ORDER_STATUS: "/order/admin/orders/",
 
+  
+  GET_ALL_DEALS: "/restaurants/all-deal/",
+  GET_DEAL_BY_ID: "/restaurants/deal/",
+
   // Analytics
   ADMIN_OVERVIEW: "/order/admin/analytics/overview/",
   ADMIN_REVENUE_OVER_TIME: "/order/admin/analytics/revenue-over-time/",
