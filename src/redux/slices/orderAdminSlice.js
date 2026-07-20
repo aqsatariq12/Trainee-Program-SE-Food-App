@@ -5,8 +5,8 @@ import { ENDPOINTS } from "../../api/endpoints";
 // Saari orders fetch karo (admin)
 export const fetchAllOrders = createAsyncThunk(
   "order/fetchAllOrders",
-  async (_, { rejectWithValue }) => {
-    const token = localStorage.getItem("token");
+  async (_, { rejectWithValue, getState }) => {
+          const token = getState().auth.accessToken;
 
     try {
       const response = await fetch(`${BASE_URL}${ENDPOINTS.GET_ALL_ORDERS}`, {
@@ -31,8 +31,8 @@ export const fetchAllOrders = createAsyncThunk(
 // Order ka status update karo
 export const updateOrderStatus = createAsyncThunk(
   "order/updateOrderStatus",
-  async ({ orderId, status }, { rejectWithValue }) => {
-    const token = localStorage.getItem("token");
+  async ({ orderId, status }, { rejectWithValue, getState }) => {
+          const token = getState().auth.accessToken;
 
     try {
       const response = await fetch(

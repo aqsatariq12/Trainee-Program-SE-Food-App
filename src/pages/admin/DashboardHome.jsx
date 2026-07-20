@@ -27,14 +27,17 @@ const DashboardHome = () => {
     overview,
     revenueOverTime,
     ordersByStatus,
-    // popularItems,
-    // popularDeals,
+    ordersLoading,
+    overviewLoading,
+    overviewError,
     revenueByRestaurant,
-    loading,
-    error,
+    revenueLoading,
+    revenueError,
+    ordersError,
+    revenueRestaurantLoading,
+    revenueRestaurantError,
   } = useSelector((state) => state.adminAnalytics);
-
-
+  
   const { orders } = useSelector((state) => state.orderAdmin);
   useEffect(() => {
       console.log("DashboardHome Mounted");
@@ -44,6 +47,30 @@ const DashboardHome = () => {
     dispatch(fetchRevenueOverTime());
     dispatch(fetchOrdersByStatus());
   }, [dispatch]);
+  
+  if (
+    overviewLoading ||
+    ordersLoading ||
+    revenueRestaurantLoading ||
+    revenueLoading
+  ) {
+    return <div className="text-center p-5">Loading Details...</div>;
+  }
+
+  // Combined error state
+  if (
+    overviewError ||
+    ordersError ||
+    revenueRestaurantError ||
+    revenueError
+  ) {
+    return (
+      <div className="text-center text-red-500 p-5">
+        Error loading data.
+      </div>
+    );
+  }
+
 
   // console.log(overview);
   // console.log(orders);

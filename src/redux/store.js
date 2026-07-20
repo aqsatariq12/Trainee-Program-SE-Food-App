@@ -7,6 +7,7 @@ import dealReducer from "./slices/dealSlice";
 import restaurantReducer from "./slices/restaurantSlice";
 import adminAnalyticsReducer from "./slices/adminAnalyticsSlice";
 import orderAdminReducer from "./slices/orderAdminSlice";
+import menuAdminReducer from "./slices/menuAdminSlice";
 export const store = configureStore({
     reducer:{
         auth:authReducer,
@@ -17,5 +18,7 @@ export const store = configureStore({
         restaurants: restaurantReducer,
         orderAdmin:orderAdminReducer,
         adminAnalytics:adminAnalyticsReducer,
+        menuAdmin: menuAdminReducer,
+
     },
 });

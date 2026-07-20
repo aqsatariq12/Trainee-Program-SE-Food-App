@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { BASE_URL } from "../../api/api";
 import { ENDPOINTS } from "../../api/endpoints";
 
-const fetchAnalytics = async (endpoint, rejectWithValue) => {
-  const token = localStorage.getItem("token");
+const fetchAnalytics = async (endpoint, { rejectWithValue, getState }) => {
+  const token = getState().auth.accessToken;
 
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
@@ -26,45 +26,42 @@ const fetchAnalytics = async (endpoint, rejectWithValue) => {
 // revenue overtime
 export const fetchRevenueOverTime = createAsyncThunk(
   "adminAnalytics/fetchRevenueOverTime",
-  async (_, { rejectWithValue }) => {
-    return fetchAnalytics(ENDPOINTS.ADMIN_REVENUE_OVER_TIME, rejectWithValue);
+  async (_, thunkAPI) => {
+    return fetchAnalytics(ENDPOINTS.ADMIN_REVENUE_OVER_TIME, thunkAPI);
   },
 );
 // order status
 export const fetchOrdersByStatus = createAsyncThunk(
   "adminAnalytics/fetchOrdersByStatus",
-  async (_, { rejectWithValue }) => {
-    return fetchAnalytics(ENDPOINTS.ADMIN_ORDERS_BY_STATUS, rejectWithValue);
+  async (_, thunkAPI) => {
+    return fetchAnalytics(ENDPOINTS.ADMIN_ORDERS_BY_STATUS, thunkAPI);
   },
 );
 // popular items
 export const fetchPopularItems = createAsyncThunk(
   "adminAnalytics/fetchPopularItems",
-  async (_, { rejectWithValue }) => {
-    return fetchAnalytics(ENDPOINTS.ADMIN_POPULAR_ITEMS, rejectWithValue);
+  async (_, thunkAPI) => {
+    return fetchAnalytics(ENDPOINTS.ADMIN_POPULAR_ITEMS, thunkAPI);
   },
 );
 //popular deals
 export const fetchPopularDeals = createAsyncThunk(
   "adminAnalytics/fetchPopularDeals",
-  async (_, { rejectWithValue }) => {
-    return fetchAnalytics(ENDPOINTS.ADMIN_POPULAR_DEALS, rejectWithValue);
+  async (_, thunkAPI) => {
+    return fetchAnalytics(ENDPOINTS.ADMIN_POPULAR_DEALS, thunkAPI);
   },
 );
 // Revenve by restaurant
 export const fetchRevenueByRestaurant = createAsyncThunk(
   "adminAnalytics/fetchRevenueByRestaurant",
-  async (_, { rejectWithValue }) => {
-    return fetchAnalytics(
-      ENDPOINTS.ADMIN_REVENUE_BY_RESTAURANT,
-      rejectWithValue,
-    );
+  async (_, thunkAPI) => {
+    return fetchAnalytics(ENDPOINTS.ADMIN_REVENUE_BY_RESTAURANT, thunkAPI);
   },
 );
 export const fetchOverview = createAsyncThunk(
   "adminAnalytics/fetchOverview",
-  async (_, { rejectWithValue }) => {
-    const token = localStorage.getItem("token");
+  async (_, { rejectWithValue, getState }) => {
+    const token = getState().auth.accessToken;
 
     try {
       const response = await fetch(`${BASE_URL}${ENDPOINTS.ADMIN_OVERVIEW}`, {
@@ -89,16 +86,31 @@ export const fetchOverview = createAsyncThunk(
 const adminAnalyticsSlice = createSlice({
   name: "adminAnalytics",
 
-initialState: {
-  overview: null,
-  revenueOverTime: [],
-  revenueByRestaurant: [],
-  ordersByStatus: [],
-  popularItems: [],
-  popularDeals: [],
-  loading: false,
-  error: null,
-},
+  initialState: {
+    overview: null,
+    overviewLoading: false,
+    overviewError: null,
+
+    revenueOverTime: [],
+    revenueLoading: false,
+    revenueError: null,
+
+    revenueByRestaurant: [],
+    revenueRestaurantLoading: false,
+    revenueRestaurantError: null,
+
+    ordersByStatus: [],
+    ordersLoading: false,
+    ordersError: null,
+
+    popularItems: [],
+    popularItemsLoading: false,
+    popularItemsError: null,
+
+    popularDeals: [],
+    dealsLoading: false,
+    dealsError: null,
+  },
 
   reducers: {},
 
@@ -107,86 +119,86 @@ initialState: {
 
       // ================= OVERVIEW =================
       .addCase(fetchOverview.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.overviewLoading = true;
+        state.overviewError = null;
       })
       .addCase(fetchOverview.fulfilled, (state, action) => {
-        state.loading = false;
+        state.overviewLoading = false;
         state.overview = action.payload.data;
       })
       .addCase(fetchOverview.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.overviewLoading = false;
+        state.overviewError = action.payload;
       })
 
       // ================= REVENUE OVER TIME =================
       .addCase(fetchRevenueOverTime.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.revenueLoading = true;
+        state.revenueError = null;
       })
       .addCase(fetchRevenueOverTime.fulfilled, (state, action) => {
-        state.loading = false;
+        state.revenueLoading = false;
         state.revenueOverTime = action.payload.data;
       })
       .addCase(fetchRevenueOverTime.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.revenueLoading = false;
+        state.revenueError = action.payload;
       })
 
       // ================= ORDERS BY STATUS =================
       .addCase(fetchOrdersByStatus.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.ordersLoading = true;
+        state.ordersError = null;
       })
       .addCase(fetchOrdersByStatus.fulfilled, (state, action) => {
-        state.loading = false;
+        state.ordersLoading = false;
         state.ordersByStatus = action.payload.data;
       })
       .addCase(fetchOrdersByStatus.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.ordersLoading = false;
+        state.ordersError = action.payload;
       })
 
       // ================= POPULAR ITEMS =================
       .addCase(fetchPopularItems.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.popularItemsLoading = true;
+        state.popularItemsError = null;
       })
       .addCase(fetchPopularItems.fulfilled, (state, action) => {
-        state.loading = false;
+        state.popularItemsLoading = false;
         state.popularItems = action.payload.data;
       })
       .addCase(fetchPopularItems.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.popularItemsLoading = false;
+        state.popularItemsError = action.payload;
       })
 
       // ================= POPULAR DEALS =================
       .addCase(fetchPopularDeals.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.dealsLoading = true;
+        state.dealsError = null;
       })
       .addCase(fetchPopularDeals.fulfilled, (state, action) => {
-        state.loading = false;
+        state.dealsLoading = false;
         state.popularDeals = action.payload.data;
       })
       .addCase(fetchPopularDeals.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.dealsLoading = false;
+        state.dealsError = action.payload;
       })
 
       // ================= REVENUE BY RESTAURANT =================
       .addCase(fetchRevenueByRestaurant.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.revenueLoading = true;
+        state.revenueError = null;
       })
       .addCase(fetchRevenueByRestaurant.fulfilled, (state, action) => {
-        state.loading = false;
+        state.revenueLoading = false;
         state.revenueByRestaurant = action.payload.data;
       })
       .addCase(fetchRevenueByRestaurant.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.revenueLoading = false;
+        state.revenueError = action.payload;
       });
   },
 });
