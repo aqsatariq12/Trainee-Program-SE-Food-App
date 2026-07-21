@@ -23,9 +23,11 @@ import Orders from "./pages/customer/Orders";
 import OrderDetails from "./pages/customer/OrderDetails";
 import DealDetail from "./pages/customer/DealDetail";
 import NotFound from "./pages/NotFound";
+import { BASE_URL } from "./api/api.js";
 function App() {
   const [count, setCount] = useState(0);
 
+console.log("BASE_URL:", BASE_URL);
   return (
     <>
       <Routes>
