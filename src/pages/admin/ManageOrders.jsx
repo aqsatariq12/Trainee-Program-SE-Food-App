@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "../../context/ThemeContext";
 
 import { Package } from "lucide-react";
-import OrderSearch from "../../components/adminOrders/OrderSearch";
+import OrderSearch from "../../components/adminOrders/orderSearch";
 import OrdersTable from "../../components/adminOrders/OrdersTable";
 import useDebounce from "../../hooks/useDebounce";
 import OrderStatusFilter from "../../components/adminOrders/OrderStatusFilter";
