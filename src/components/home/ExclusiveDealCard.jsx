@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchAllDeals } from "../../redux/slices/dealSlice";
 import DealCard from "./DealCard";
-import NextPage from "../../assets/images/Next Page.png";
+import NextPage from "../../assets/images/Next page.png";
 
 
 function ExclusiveDeals() {
