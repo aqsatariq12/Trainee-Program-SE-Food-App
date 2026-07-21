@@ -5,7 +5,7 @@ import logoDark from "../../assets/logos/logoWhite.png";
 import logo1 from "../../assets/logos/LOGO 1.png";
 import maleuser from "../../assets/icons/Male User.png";
 import maleuserDark from "../../assets/icons/maleUserDark.png";
-import TopBar from "./TopBar";
+import TopBar from "./Topbar";
 import { useTheme } from "../../context/ThemeContext";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/slices/authSlice";
